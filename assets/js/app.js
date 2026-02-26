@@ -12,9 +12,9 @@
     filtered: [],
     activeGroup: "ALL",
     q: "",
+    preferReduced: false,
+    orbitRect: null,
   };
-
-  const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function safeText(s){ return (s ?? "").toString(); }
 
@@ -56,7 +56,7 @@
         await navigator.share({ title, url });
         return true;
       }catch(e){
-        return false;
+        // ignore
       }
     }
     await copyText(url);
@@ -69,6 +69,14 @@
     if(x === "PREP") return "badgePrep";
     if(x === "MAINT") return "badgeMaint";
     return "";
+  }
+
+  function badgeDockClass(b){
+    const x = safeText(b).toUpperCase();
+    if(x === "LIVE") return "dockBadge";
+    if(x === "PREP") return "dockBadge prep";
+    if(x === "MAINT") return "dockBadge maint";
+    return "dockBadge";
   }
 
   function makeFallbackLetters(name){
@@ -200,23 +208,67 @@
       filtered.length === items.length && state.activeGroup === "ALL" && !q
         ? `전체 ${items.length}개 표시 중`
         : `필터/검색 결과 ${filtered.length}개 (전체 ${items.length}개 중)`;
+
+    const hudNodes = $("#hudNodes");
+    if(hudNodes) hudNodes.textContent = String(filtered.length);
+  }
+
+  function renderDock(items){
+    const dock = $("#dockBtns");
+    const drawer = $("#drawerLinks");
+    if(dock) dock.innerHTML = "";
+    if(drawer) drawer.innerHTML = "";
+
+    // 허브 자신(HUB 그룹) 포함/제외 선택: 포함하되 맨 앞
+    const ordered = [...items].sort((a,b)=>{
+      const ag = safeText(a.group).toUpperCase();
+      const bg = safeText(b.group).toUpperCase();
+      if(ag === "HUB" && bg !== "HUB") return -1;
+      if(bg === "HUB" && ag !== "HUB") return 1;
+      return safeText(a.name).localeCompare(safeText(b.name));
+    });
+
+    ordered.forEach((it)=>{
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "dockBtn";
+      btn.innerHTML = `<span class="dockDot" aria-hidden="true"></span><span>${safeText(it.short || it.name)}</span><span class="${badgeDockClass(it.badge)}">${safeText(it.badge || "LINK")}</span>`;
+      btn.addEventListener("click", ()=> window.open(it.url, "_blank", "noopener,noreferrer"));
+      btn.addEventListener("contextmenu", (e)=>{ e.preventDefault(); copyText(it.url); });
+      dock && dock.appendChild(btn);
+
+      const d = document.createElement("button");
+      d.type = "button";
+      d.className = "drawerBtn";
+      d.textContent = safeText(it.name);
+      d.addEventListener("click", ()=> window.open(it.url, "_blank", "noopener,noreferrer"));
+      drawer && drawer.appendChild(d);
+    });
+
+    $("#dockCopyAll")?.addEventListener("click", ()=>{
+      const lines = state.all.map(it => `- ${it.name}: ${it.url}`);
+      copyText(lines.join("\n"));
+    });
+    $("#dockTop")?.addEventListener("click", ()=> window.scrollTo({top:0, behavior:"smooth"}));
   }
 
   function renderOrbit(links){
     const orbit = $("#orbitNodes");
+    const svg = $("#orbitLinks");
     orbit.innerHTML = "";
+    svg.innerHTML = "";
     state.nodes = [];
 
     const count = links.length;
     if(count === 0) return;
 
     const radius = count <= 5 ? 190 : 220;
+
     links.forEach((item, idx)=>{
       const node = document.createElement("button");
       node.className = "node";
       node.type = "button";
       node.setAttribute("aria-label", `${item.name} 열기`);
-      node.dataset.idx = String(idx);
 
       const badge = document.createElement("div");
       badge.className = `badge ${badgeClass(item.badge)}`;
@@ -250,100 +302,17 @@
       state.nodes.push({ node, idx, item, radius, count });
     });
 
-    requestAnimationFrame(layoutOrbit);
-  }
-
-  function renderGrid(links){
-    const grid = $("#grid");
-    grid.innerHTML = "";
-
-    links.forEach((item)=>{
-      const card = document.createElement("div");
-      card.className = "card";
-
-      const inner = document.createElement("div");
-      inner.className = "cardInner";
-
-      const top = document.createElement("div");
-      top.className = "cardTop";
-
-      const logoBox = document.createElement("div");
-      logoBox.className = "logoBox";
-      if(item.logo){
-        const im = imgOrFallback(item.logo, item.name);
-        im.style.width = "34px";
-        im.style.height = "34px";
-        logoBox.appendChild(im);
-      }else{
-        logoBox.textContent = makeFallbackLetters(item.name);
-      }
-
-      const titles = document.createElement("div");
-      const h3 = document.createElement("h3");
-      h3.textContent = safeText(item.name);
-
-      const meta = document.createElement("p");
-      meta.className = "meta";
-      meta.textContent = safeText(item.tagline);
-
-      titles.appendChild(h3);
-      titles.appendChild(meta);
-
-      top.appendChild(logoBox);
-      top.appendChild(titles);
-
-      const row = document.createElement("div");
-      row.className = "row";
-
-      const go = document.createElement("button");
-      go.className = "smallBtn";
-      go.type = "button";
-      go.innerHTML = `바로가기 <small>새 창</small>`;
-      go.onclick = ()=> window.open(item.url, "_blank", "noopener,noreferrer");
-
-      const copy = document.createElement("button");
-      copy.className = "smallBtn";
-      copy.type = "button";
-      copy.innerHTML = `링크 복사 <small>URL</small>`;
-      copy.onclick = ()=> copyText(item.url);
-
-      const more = document.createElement("button");
-      more.className = "smallBtn";
-      more.type = "button";
-      more.innerHTML = `정보/Quick <small>모달</small>`;
-      more.onclick = ()=> openModal(item);
-
-      row.appendChild(go);
-      row.appendChild(copy);
-      row.appendChild(more);
-
-      // Quick buttons (up to 4)
-      const quick = Array.isArray(item.quick) ? item.quick : [];
-      if(quick.length){
-        const qRow = document.createElement("div");
-        qRow.className = "quickRow";
-        quick.slice(0,4).forEach(q=>{
-          if(!q || !q.url) return;
-          const qb = document.createElement("button");
-          qb.className = "quickBtn";
-          qb.type = "button";
-          qb.textContent = safeText(q.label || "Quick");
-          qb.onclick = ()=> window.open(q.url, "_blank", "noopener,noreferrer");
-          qRow.appendChild(qb);
-        });
-        inner.appendChild(qRow);
-      }
-
-      inner.appendChild(top);
-      inner.appendChild(row);
-      card.appendChild(inner);
-      grid.appendChild(card);
+    requestAnimationFrame(()=> {
+      layoutOrbit();
+      drawOrbitLinks();
     });
   }
 
   function layoutOrbit(){
     const area = $("#orbitArea");
     const rect = area.getBoundingClientRect();
+    state.orbitRect = rect;
+
     const cx = rect.width / 2;
     const cy = rect.height / 2;
 
@@ -357,12 +326,120 @@
     });
   }
 
-  function animate(){
-    if(!prefersReduced && !state.paused){
-      state.angle += state.speed;
-    }
-    layoutOrbit();
-    requestAnimationFrame(animate);
+  function drawOrbitLinks(){
+    const svg = $("#orbitLinks");
+    if(!svg || !state.orbitRect) return;
+
+    const w = state.orbitRect.width;
+    const h = state.orbitRect.height;
+    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+
+    const cx = w/2, cy = h/2;
+
+    // Gradients
+    svg.innerHTML = `
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="rgba(56,232,255,.38)"/>
+          <stop offset="100%" stop-color="rgba(215,184,106,.22)"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2.2" result="b"/>
+          <feMerge>
+            <feMergeNode in="b"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+    `;
+
+    // lines from each node to center
+    state.nodes.forEach((n)=>{
+      const r = n.node.getBoundingClientRect();
+      const ar = $("#orbitArea").getBoundingClientRect();
+
+      const nx = (r.left - ar.left) + r.width/2;
+      const ny = (r.top - ar.top) + r.height/2;
+
+      const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+      line.setAttribute("x1", nx);
+      line.setAttribute("y1", ny);
+      line.setAttribute("x2", cx);
+      line.setAttribute("y2", cy);
+      line.setAttribute("stroke", "url(#g1)");
+      line.setAttribute("stroke-width", "1");
+      line.setAttribute("opacity", "0.35");
+      line.setAttribute("filter","url(#glow)");
+      svg.appendChild(line);
+    });
+
+    // center ring
+    const c = document.createElementNS("http://www.w3.org/2000/svg","circle");
+    c.setAttribute("cx", cx);
+    c.setAttribute("cy", cy);
+    c.setAttribute("r", 70);
+    c.setAttribute("fill","none");
+    c.setAttribute("stroke","rgba(56,232,255,.22)");
+    c.setAttribute("stroke-width","1");
+    c.setAttribute("opacity","0.75");
+    svg.appendChild(c);
+  }
+
+  function attachParallax(){
+    const area = $("#orbitArea");
+    if(!area) return;
+
+    const onMove = (e)=>{
+      const rect = area.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;  // 0..1
+      const y = (e.clientY - rect.top) / rect.height;
+      const mx = (x - 0.5);
+      const my = (y - 0.5);
+
+      // store to CSS vars for HUD lighting
+      document.documentElement.style.setProperty("--mx", mx.toFixed(3));
+      document.documentElement.style.setProperty("--my", my.toFixed(3));
+
+      // subtle tilt for orbit area
+      area.style.transform = `perspective(900px) rotateX(${(-my*6).toFixed(2)}deg) rotateY(${(mx*6).toFixed(2)}deg)`;
+    };
+
+    area.addEventListener("pointermove", onMove);
+    area.addEventListener("pointerleave", ()=>{
+      area.style.transform = "none";
+      document.documentElement.style.setProperty("--mx", "0");
+      document.documentElement.style.setProperty("--my", "0");
+    });
+  }
+
+  function attachDrawer(){
+    const open = ()=>{
+      $("#drawerBack").classList.add("on");
+      $("#drawerBack").setAttribute("aria-hidden","false");
+    };
+    const close = ()=>{
+      $("#drawerBack").classList.remove("on");
+      $("#drawerBack").setAttribute("aria-hidden","true");
+    };
+    $("#btnMenu")?.addEventListener("click", open);
+    $("#drawerClose")?.addEventListener("click", close);
+    $("#drawerBack")?.addEventListener("click", (e)=>{ if(e.target.id === "drawerBack") close(); });
+
+    $("#drawerCopyHub")?.addEventListener("click", ()=> copyText(location.href));
+    $("#drawerShareHub")?.addEventListener("click", ()=> shareUrl(document.title, location.href));
+    $("#drawerEmergency")?.addEventListener("click", ()=> {
+      const script =
+`[긴급 신고 템플릿]
+1) 위치: (주소/랜드마크)
+2) 상황: (무슨 일이 발생했는지)
+3) 위험요소: (불/연기/흉기/추락/의식없음 등)
+4) 인원: (성인/어린이, 부상자 수)
+5) 연락처: (보호자/신고자)
+* 필요 시 112/119 즉시 신고`;
+      copyText(script);
+    });
+
+    window.addEventListener("keydown",(e)=>{ if(e.key==="Escape") close(); });
   }
 
   function attachTopActions(){
@@ -408,15 +485,37 @@
     });
   }
 
+  function animate(){
+    if(!state.preferReduced && !state.paused){
+      state.angle += state.speed;
+    }
+    layoutOrbit();
+    drawOrbitLinks();
+    requestAnimationFrame(animate);
+  }
+
   function init(){
+    state.preferReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const links = (window.ALLIANCE_LINKS || []).filter(x=>x && x.url);
     state.all = links;
 
     $("#year").textContent = new Date().getFullYear();
 
-    attachModal();
-    attachTopActions();
+    // query param ?q=
+    const url = new URL(location.href);
+    const q0 = url.searchParams.get("q");
+    if(q0){
+      $("#q").value = q0;
+      state.q = q0;
+    }
 
+    attachModal();
+    attachDrawer();
+    attachTopActions();
+    attachParallax();
+
+    renderDock(links);
     renderChips(links);
     applyFilter();
 
@@ -426,15 +525,22 @@
     orbitArea.addEventListener("touchstart", ()=> state.paused = true, {passive:true});
     orbitArea.addEventListener("touchend", ()=> state.paused = false, {passive:true});
 
-    window.addEventListener("resize", layoutOrbit);
+    window.addEventListener("resize", ()=>{
+      layoutOrbit();
+      drawOrbitLinks();
+    });
 
-    if(prefersReduced){
+    if(state.preferReduced){
       state.paused = true;
       $("#pauseState").textContent = "정지";
     }
 
+    const hudSync = $("#hudSync");
+    if(hudSync) hudSync.textContent = "100%";
+
     requestAnimationFrame(()=> {
       layoutOrbit();
+      drawOrbitLinks();
       animate();
     });
   }
