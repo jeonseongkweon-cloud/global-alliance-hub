@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://YOURDOMAIN/sitemap.xml
+Sitemap: https://jeonseongkweon-cloud.github.io/global-alliance-hub/sitemap.xml
