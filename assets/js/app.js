@@ -5,11 +5,13 @@
 
   const state = {
     paused: false,
-    speed: 0.015, // 회전 속도(낮을수록 느림)
+    speed: 0.015,
     angle: 0,
     nodes: [],
-    links: [],
-    active: null,
+    all: [],
+    filtered: [],
+    activeGroup: "ALL",
+    q: "",
   };
 
   const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -31,7 +33,6 @@
       toast("복사 완료!");
       return true;
     }catch(e){
-      // fallback
       const ta = document.createElement("textarea");
       ta.value = text;
       document.body.appendChild(ta);
@@ -55,7 +56,6 @@
         await navigator.share({ title, url });
         return true;
       }catch(e){
-        // user canceled or blocked
         return false;
       }
     }
@@ -63,34 +63,12 @@
     return true;
   }
 
-  function openModal(item){
-    state.active = item;
-    $("#mTitle").textContent = safeText(item.name);
-    $("#mTag").textContent = safeText(item.tagline);
-    $("#mUrl").textContent = safeText(item.url);
-    $("#mUrl").scrollLeft = 0;
-
-    $("#mGo").onclick = () => window.open(item.url, "_blank", "noopener,noreferrer");
-    $("#mCopy").onclick = () => copyText(item.url);
-    $("#mShare").onclick = () => shareUrl(item.name, item.url);
-
-    $("#modalBack").classList.add("on");
-    $("#modalBack").setAttribute("aria-hidden","false");
-  }
-
-  function closeModal(){
-    $("#modalBack").classList.remove("on");
-    $("#modalBack").setAttribute("aria-hidden","true");
-  }
-
-  function attachModal(){
-    $("#mClose").addEventListener("click", closeModal);
-    $("#modalBack").addEventListener("click", (e)=>{
-      if(e.target.id === "modalBack") closeModal();
-    });
-    window.addEventListener("keydown", (e)=>{
-      if(e.key === "Escape") closeModal();
-    });
+  function badgeClass(b){
+    const x = safeText(b).toUpperCase();
+    if(x === "LIVE") return "badgeLive";
+    if(x === "PREP") return "badgePrep";
+    if(x === "MAINT") return "badgeMaint";
+    return "";
   }
 
   function makeFallbackLetters(name){
@@ -121,16 +99,119 @@
     return img;
   }
 
+  function openModal(item){
+    $("#mTitle").textContent = safeText(item.name);
+    $("#mTag").textContent = safeText(item.tagline);
+    $("#mUrl").textContent = safeText(item.url);
+    $("#mUrl").scrollLeft = 0;
+
+    $("#mGo").onclick = () => window.open(item.url, "_blank", "noopener,noreferrer");
+    $("#mCopy").onclick = () => copyText(item.url);
+    $("#mShare").onclick = () => shareUrl(item.name, item.url);
+
+    const quick = Array.isArray(item.quick) ? item.quick : [];
+    const qWrap = $("#mQuickWrap");
+    const qBox = $("#mQuick");
+    qBox.innerHTML = "";
+    if(quick.length){
+      qWrap.style.display = "block";
+      quick.forEach((q)=>{
+        if(!q || !q.url) return;
+        const b = document.createElement("button");
+        b.className = "quickBtn";
+        b.type = "button";
+        b.textContent = safeText(q.label || "바로가기");
+        b.addEventListener("click", ()=> window.open(q.url, "_blank", "noopener,noreferrer"));
+        qBox.appendChild(b);
+      });
+    }else{
+      qWrap.style.display = "none";
+    }
+
+    $("#modalBack").classList.add("on");
+    $("#modalBack").setAttribute("aria-hidden","false");
+  }
+
+  function closeModal(){
+    $("#modalBack").classList.remove("on");
+    $("#modalBack").setAttribute("aria-hidden","true");
+  }
+
+  function attachModal(){
+    $("#mClose").addEventListener("click", closeModal);
+    $("#modalBack").addEventListener("click", (e)=>{
+      if(e.target.id === "modalBack") closeModal();
+    });
+    window.addEventListener("keydown", (e)=>{
+      if(e.key === "Escape") closeModal();
+    });
+  }
+
+  function renderChips(items){
+    const chips = $("#chips");
+    chips.innerHTML = "";
+
+    const groups = new Map();
+    items.forEach(it=>{
+      const g = safeText(it.group || "OTHER").trim() || "OTHER";
+      groups.set(g, (groups.get(g) || 0) + 1);
+    });
+
+    const ordered = ["ALL", ...Array.from(groups.keys()).sort((a,b)=>a.localeCompare(b))];
+
+    ordered.forEach((g)=>{
+      const c = document.createElement("button");
+      c.type = "button";
+      c.className = "chip" + (state.activeGroup === g ? " on" : "");
+      c.textContent = g === "ALL" ? `ALL (${items.length})` : `${g} (${groups.get(g)})`;
+      c.addEventListener("click", ()=>{
+        state.activeGroup = g;
+        $$(".chip").forEach(x=>x.classList.remove("on"));
+        c.classList.add("on");
+        applyFilter();
+      });
+      chips.appendChild(c);
+    });
+  }
+
+  function matchQuery(item, q){
+    if(!q) return true;
+    const hay = `${safeText(item.name)} ${safeText(item.short)} ${safeText(item.tagline)} ${safeText(item.group)} ${safeText(item.badge)}`.toLowerCase();
+    return hay.includes(q.toLowerCase());
+  }
+
+  function applyFilter(){
+    const items = state.all;
+
+    const byGroup = state.activeGroup === "ALL"
+      ? items
+      : items.filter(it => safeText(it.group) === state.activeGroup);
+
+    const q = safeText(state.q).trim();
+    const filtered = byGroup.filter(it => matchQuery(it, q));
+
+    state.filtered = filtered;
+
+    renderOrbit(filtered);
+    renderGrid(filtered);
+
+    $("#count").textContent = String(filtered.length);
+    $("#stat").textContent =
+      filtered.length === items.length && state.activeGroup === "ALL" && !q
+        ? `전체 ${items.length}개 표시 중`
+        : `필터/검색 결과 ${filtered.length}개 (전체 ${items.length}개 중)`;
+  }
+
   function renderOrbit(links){
     const orbit = $("#orbitNodes");
     orbit.innerHTML = "";
+    state.nodes = [];
 
-    // 7개면 바깥 링에 7개 배치(안쪽 링은 장식)
     const count = links.length;
-    const radius = 220; // px (중심 기준)
-    const center = {x: 0, y: 0};
+    if(count === 0) return;
 
-    state.nodes = links.map((item, idx)=>{
+    const radius = count <= 5 ? 190 : 220;
+    links.forEach((item, idx)=>{
       const node = document.createElement("button");
       node.className = "node";
       node.type = "button";
@@ -138,14 +219,15 @@
       node.dataset.idx = String(idx);
 
       const badge = document.createElement("div");
-      badge.className = "badge";
+      badge.className = `badge ${badgeClass(item.badge)}`;
       badge.textContent = safeText(item.badge || "LINK");
 
       const hint = document.createElement("div");
       hint.className = "hint";
-      hint.textContent = safeText(item.name);
+      hint.textContent = safeText(item.short || item.name);
 
       node.appendChild(badge);
+
       if(item.logo){
         node.appendChild(imgOrFallback(item.logo, item.name));
       }else{
@@ -154,25 +236,27 @@
         fb.textContent = makeFallbackLetters(item.name);
         node.appendChild(fb);
       }
+
       node.appendChild(hint);
 
       node.addEventListener("click", ()=> openModal(item));
 
-      // hover/touch pause
       node.addEventListener("mouseenter", ()=> state.paused = true);
       node.addEventListener("mouseleave", ()=> state.paused = false);
       node.addEventListener("touchstart", ()=> state.paused = true, {passive:true});
       node.addEventListener("touchend", ()=> state.paused = false, {passive:true});
 
       orbit.appendChild(node);
-
-      return { node, idx, item, radius, center, count };
+      state.nodes.push({ node, idx, item, radius, count });
     });
+
+    requestAnimationFrame(layoutOrbit);
   }
 
   function renderGrid(links){
     const grid = $("#grid");
     grid.innerHTML = "";
+
     links.forEach((item)=>{
       const card = document.createElement("div");
       card.className = "card";
@@ -197,6 +281,7 @@
       const titles = document.createElement("div");
       const h3 = document.createElement("h3");
       h3.textContent = safeText(item.name);
+
       const meta = document.createElement("p");
       meta.className = "meta";
       meta.textContent = safeText(item.tagline);
@@ -225,26 +310,40 @@
       const more = document.createElement("button");
       more.className = "smallBtn";
       more.type = "button";
-      more.innerHTML = `정보/공유 <small>모달</small>`;
+      more.innerHTML = `정보/Quick <small>모달</small>`;
       more.onclick = ()=> openModal(item);
 
       row.appendChild(go);
       row.appendChild(copy);
       row.appendChild(more);
 
+      // Quick buttons (up to 4)
+      const quick = Array.isArray(item.quick) ? item.quick : [];
+      if(quick.length){
+        const qRow = document.createElement("div");
+        qRow.className = "quickRow";
+        quick.slice(0,4).forEach(q=>{
+          if(!q || !q.url) return;
+          const qb = document.createElement("button");
+          qb.className = "quickBtn";
+          qb.type = "button";
+          qb.textContent = safeText(q.label || "Quick");
+          qb.onclick = ()=> window.open(q.url, "_blank", "noopener,noreferrer");
+          qRow.appendChild(qb);
+        });
+        inner.appendChild(qRow);
+      }
+
       inner.appendChild(top);
       inner.appendChild(row);
-
       card.appendChild(inner);
       grid.appendChild(card);
     });
-
-    $("#count").textContent = String(links.length);
   }
 
   function layoutOrbit(){
-    // angle 기준으로 각 node 위치 계산
-    const rect = $("#orbitArea").getBoundingClientRect();
+    const area = $("#orbitArea");
+    const rect = area.getBoundingClientRect();
     const cx = rect.width / 2;
     const cy = rect.height / 2;
 
@@ -253,8 +352,6 @@
       const a = state.angle + step * n.idx;
       const x = cx + Math.cos(a) * n.radius;
       const y = cy + Math.sin(a) * n.radius;
-
-      // node 중심 정렬
       n.node.style.left = `${x - 46}px`;
       n.node.style.top  = `${y - 46}px`;
     });
@@ -275,13 +372,8 @@
       toast(state.paused ? "회전 정지" : "회전 재개");
     });
 
-    $("#btnCopyHub").addEventListener("click", ()=>{
-      copyText(location.href);
-    });
-
-    $("#btnShareHub").addEventListener("click", ()=>{
-      shareUrl(document.title, location.href);
-    });
+    $("#btnCopyHub").addEventListener("click", ()=> copyText(location.href));
+    $("#btnShareHub").addEventListener("click", ()=> shareUrl(document.title, location.href));
 
     $("#btnEmergencyCopy").addEventListener("click", ()=>{
       const script =
@@ -294,36 +386,53 @@
 * 필요 시 112/119 즉시 신고`;
       copyText(script);
     });
+
+    $("#btnClear").addEventListener("click", ()=>{
+      state.q = "";
+      state.activeGroup = "ALL";
+      $("#q").value = "";
+      renderChips(state.all);
+      applyFilter();
+      toast("초기화 완료");
+    });
+
+    $("#btnCopySelected").addEventListener("click", ()=>{
+      const lines = state.filtered.map(it => `- ${it.name}: ${it.url}`);
+      const text = `[HUB 결과요약]\n${lines.join("\n")}`;
+      copyText(text);
+    });
+
+    $("#q").addEventListener("input", (e)=>{
+      state.q = e.target.value || "";
+      applyFilter();
+    });
   }
 
   function init(){
     const links = (window.ALLIANCE_LINKS || []).filter(x=>x && x.url);
+    state.all = links;
 
-    // 기본 문구
     $("#year").textContent = new Date().getFullYear();
 
-    renderOrbit(links);
-    renderGrid(links);
     attachModal();
     attachTopActions();
 
-    // orbit interactions
+    renderChips(links);
+    applyFilter();
+
     const orbitArea = $("#orbitArea");
     orbitArea.addEventListener("mouseenter", ()=> state.paused = true);
     orbitArea.addEventListener("mouseleave", ()=> state.paused = false);
     orbitArea.addEventListener("touchstart", ()=> state.paused = true, {passive:true});
     orbitArea.addEventListener("touchend", ()=> state.paused = false, {passive:true});
 
-    // resize
     window.addEventListener("resize", layoutOrbit);
 
-    // reduced motion: 정지 기본
     if(prefersReduced){
       state.paused = true;
       $("#pauseState").textContent = "정지";
     }
 
-    // start
     requestAnimationFrame(()=> {
       layoutOrbit();
       animate();
