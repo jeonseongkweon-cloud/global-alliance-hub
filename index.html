@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>GLOBAL ALLIANCE HUB | 공식 메인 대문</title>
+  <meta name="description" content="여러 단체와 프로젝트를 하나로 연결하는 공식 허브. 구조 >> 교차원리, 교차원리 기반 무도 프레임으로 통합 운영합니다." />
+  <meta name="theme-color" content="#070a12" />
+
+  <!-- OG -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="GLOBAL ALLIANCE HUB" />
+  <meta property="og:description" content="구조 >> 교차원리, 교차원리 기반 무도 | 공식 메인 대문" />
+  <meta property="og:image" content="assets/images/og.jpg" />
+
+  <link rel="preload" href="assets/css/style.css" as="style" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+
+<body>
+  <a class="sr" href="#main">본문으로 바로가기</a>
+
+  <div class="wrap">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="brand" aria-label="Global Alliance Hub">
+        <div class="brandMark" aria-hidden="true"></div>
+        <div class="brandText">
+          <b>GLOBAL ALLIANCE HUB</b>
+          <span>구조 >> 교차원리, 교차원리 기반 무도</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="pill" id="btnPause" type="button" title="회전 정지/재개">
+          <span class="dot" aria-hidden="true"></span>
+          <span>ORBIT</span>
+          <small id="pauseState">회전</small>
+        </button>
+
+        <button class="pill" id="btnCopyHub" type="button" title="이 허브 주소 복사">
+          <span class="dot" aria-hidden="true"></span>
+          <span>LINK</span>
+          <small>복사</small>
+        </button>
+
+        <button class="pill" id="btnShareHub" type="button" title="공유">
+          <span class="dot" aria-hidden="true"></span>
+          <span>SHARE</span>
+          <small>전송</small>
+        </button>
+
+        <button class="pill" id="btnEmergencyCopy" type="button" title="긴급 신고 템플릿 자동 복사">
+          <span class="dot" aria-hidden="true"></span>
+          <span>EMERGENCY</span>
+          <small>스크립트</small>
+        </button>
+      </div>
+    </div>
+
+    <!-- HERO -->
+    <main id="main" class="hero">
+      <!-- LEFT -->
+      <section class="panel heroLeft" aria-label="허브 소개">
+        <div class="kicker">
+          OFFICIAL MASTER HUB <em>•</em> Network Gateway
+        </div>
+
+        <h1 class="h1">한 번의 터치로<br/>전체 생태계를 이동합니다.</h1>
+
+        <p class="sub">
+          이 페이지는 각 단체/프로젝트를 하나의 흐름으로 연결하는 <b>공식 메인 대문</b>입니다.
+          모든 사이트는 동일한 가치와 기준을 공유하며, 아래 프레임으로 통합 운영됩니다.
+        </p>
+
+        <div class="frame" aria-label="핵심 프레임">
+          <div class="tag"><i aria-hidden="true"></i> 구조 >> 교차원리, 교차원리 기반 무도</div>
+          <div class="tag"><i aria-hidden="true"></i> 공식 지정 · 검증 · 자료실 · 행사/미디어</div>
+          <div class="tag"><i aria-hidden="true"></i> 데이터 기반 신뢰 · 장기 아카이브</div>
+        </div>
+
+        <div class="ctaRow" aria-label="빠른 동작">
+          <button class="btn primary" type="button" onclick="document.getElementById('gridAnchor').scrollIntoView({behavior:'smooth'})">
+            전체 목록 보기 <small>아래 카드</small>
+          </button>
+          <button class="btn" type="button" onclick="document.getElementById('orbitAnchor').scrollIntoView({behavior:'smooth'})">
+            오비트로 선택 <small>원형 포털</small>
+          </button>
+          <a class="btn danger" href="tel:112">
+            112 <small>긴급</small>
+          </a>
+          <a class="btn danger" href="tel:119">
+            119 <small>긴급</small>
+          </a>
+        </div>
+
+        <div class="hr"></div>
+
+        <p class="sub" style="margin-top:0">
+          팁: 오비트(원형 포털)에서 <b>마우스를 올리면 회전이 멈추고</b>,
+          원하는 단체를 클릭하면 <b>정보/공유 패널</b>이 열립니다.
+        </p>
+      </section>
+
+      <!-- RIGHT -->
+      <section class="panel heroRight" aria-label="오비트 포털" id="orbitAnchor">
+        <div class="orbit" id="orbitArea">
+          <div class="ring" aria-hidden="true"></div>
+          <div class="ring r2" aria-hidden="true"></div>
+
+          <div class="core" role="button" tabindex="0" aria-label="허브 코어">
+            <div>
+              <b>CORE</b>
+              <span>ALLIANCE GATE</span>
+            </div>
+          </div>
+
+          <!-- nodes injected here -->
+          <div id="orbitNodes" style="position:absolute; inset:0;"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- LIST -->
+    <section class="section" id="gridAnchor">
+      <div class="sectionHead">
+        <div>
+          <h2>전체 단체 목록 (<span id="count">0</span>)</h2>
+          <p>카드에서 바로가기/복사/공유를 사용할 수 있습니다.</p>
+        </div>
+        <p>“구조 >> 교차원리, 교차원리 기반 무도” 프레임 적용</p>
+      </div>
+
+      <div class="grid" id="grid" aria-label="단체 카드 목록"></div>
+    </section>
+
+    <div class="footer" aria-label="푸터">
+      <div>
+        <b>GLOBAL ALLIANCE HUB</b> · Official Gateway
+        <span style="display:block; margin-top:6px;">© <span id="year"></span> All rights reserved.</span>
+      </div>
+      <div>
+        <span>운영 원칙: 신뢰 · 안전 · 기록 · 확장</span><br/>
+        <span style="opacity:.9;">이 페이지는 각 단체의 “대문”을 연결하는 허브입니다.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modalBack" id="modalBack" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="단체 정보">
+      <div class="modalHead">
+        <div>
+          <b id="mTitle">단체명</b>
+          <div style="color:var(--muted); font-size:12px; margin-top:2px;" id="mTag">설명</div>
+        </div>
+        <button class="xbtn" id="mClose" type="button" aria-label="닫기">✕</button>
+      </div>
+
+      <div class="modalBody">
+        <div class="kv">
+          <div class="line">
+            <div class="code" id="mUrl"></div>
+          </div>
+          <div class="line" style="gap:10px;">
+            <button class="btn primary" id="mGo" type="button">바로가기 <small>새 창</small></button>
+            <button class="btn" id="mCopy" type="button">링크 복사 <small>URL</small></button>
+            <button class="btn" id="mShare" type="button">공유 <small>전송</small></button>
+          </div>
+
+          <div class="hr"></div>
+
+          <p class="sub" style="margin:0">
+            이 허브는 각 단체의 공식 대문으로 연결됩니다.
+            공통 프레임: <b>구조 >> 교차원리, 교차원리 기반 무도</b>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- DATA + APP -->
+  <script src="assets/data/links.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
