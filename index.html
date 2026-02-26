@@ -13,8 +13,68 @@
   <meta property="og:description" content="구조 >> 교차원리, 교차원리 기반 무도 | 공식 메인 대문" />
   <meta property="og:image" content="assets/images/og.jpg" />
 
-  <link rel="preload" href="assets/css/style.css" as="style" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    /* --- HUB upgrades (inline small additions) --- */
+    .searchBar{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      margin-top: 14px;
+    }
+    .input{
+      flex: 1 1 320px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border:1px solid rgba(88,166,255,.22);
+      background: rgba(7,10,18,.42);
+      color: #dbe7ff;
+      box-shadow: var(--shadow2);
+      outline: none;
+    }
+    .input:focus{ border-color: rgba(56,232,255,.45); }
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; }
+    .chip{
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(14,25,51,.55);
+      border:1px solid rgba(88,166,255,.18);
+      color: var(--txt);
+      cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      user-select:none;
+    }
+    .chip:hover{ transform: translateY(-1px); border-color: rgba(56,232,255,.38); background: rgba(14,25,51,.68); }
+    .chip.on{ border-color: rgba(215,184,106,.40); background: rgba(215,184,106,.10); }
+    .mini{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(10,18,38,.52);
+      border:1px solid rgba(88,166,255,.18);
+      color: var(--txt);
+      cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .mini:hover{ transform: translateY(-1px); border-color: rgba(56,232,255,.38); background: rgba(10,18,38,.70); }
+
+    .badgeLive{ background: rgba(61,220,151,.14) !important; border-color: rgba(61,220,151,.32) !important; }
+    .badgePrep{ background: rgba(215,184,106,.14) !important; border-color: rgba(215,184,106,.32) !important; }
+    .badgeMaint{ background: rgba(255,77,109,.14) !important; border-color: rgba(255,77,109,.32) !important; }
+
+    .quickRow{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
+    .quickBtn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 9px 10px;
+      border-radius: 12px;
+      background: rgba(10,18,38,.52);
+      border:1px solid rgba(88,166,255,.20);
+      color: var(--txt);
+      cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      font-size: 12.5px;
+    }
+    .quickBtn:hover{ transform: translateY(-1px); border-color: rgba(56,232,255,.38); background: rgba(10,18,38,.70); }
+    .muted{ color: var(--muted); }
+  </style>
 </head>
 
 <body>
@@ -24,7 +84,7 @@
     <!-- TOPBAR -->
     <div class="topbar">
       <div class="brand" aria-label="Global Alliance Hub">
-        <div class="brandMark" aria-hidden="true"></div>
+        <div class="mark" aria-hidden="true"></div>
         <div class="brandText">
           <b>GLOBAL ALLIANCE HUB</b>
           <span>구조 >> 교차원리, 교차원리 기반 무도</span>
@@ -32,7 +92,7 @@
       </div>
 
       <div class="actions">
-        <button class="pill" id="btnPause" type="button" title="회전 정지/재개">
+        <button class="pill" id="btnPause" type="button" title="오비트 회전 정지/재개">
           <span class="dot" aria-hidden="true"></span>
           <span>ORBIT</span>
           <small id="pauseState">회전</small>
@@ -79,6 +139,18 @@
           <div class="tag"><i aria-hidden="true"></i> 데이터 기반 신뢰 · 장기 아카이브</div>
         </div>
 
+        <!-- SEARCH + FILTER -->
+        <div class="searchBar" aria-label="검색 및 필터">
+          <input id="q" class="input" type="search" placeholder="검색: 단체명 / 키워드 (예: 안전, 출판, IPMA, 태권검도 …)" autocomplete="off" />
+          <button class="mini" id="btnClear" type="button">초기화</button>
+          <button class="mini" id="btnCopySelected" type="button" title="현재 필터/검색 결과 링크를 요약 복사">결과요약 복사</button>
+        </div>
+
+        <div class="chips" id="chips" aria-label="그룹 필터"></div>
+        <p class="sub muted" style="margin-top:10px;">
+          팁: 그룹을 누르고 검색어를 입력하면 목록이 즉시 정리됩니다. 카드의 Quick 버튼으로 “조회/자료실/문의”를 바로 이동하세요.
+        </p>
+
         <div class="ctaRow" aria-label="빠른 동작">
           <button class="btn primary" type="button" onclick="document.getElementById('gridAnchor').scrollIntoView({behavior:'smooth'})">
             전체 목록 보기 <small>아래 카드</small>
@@ -86,19 +158,15 @@
           <button class="btn" type="button" onclick="document.getElementById('orbitAnchor').scrollIntoView({behavior:'smooth'})">
             오비트로 선택 <small>원형 포털</small>
           </button>
-          <a class="btn danger" href="tel:112">
-            112 <small>긴급</small>
-          </a>
-          <a class="btn danger" href="tel:119">
-            119 <small>긴급</small>
-          </a>
+          <a class="btn danger" href="tel:112">112 <small>긴급</small></a>
+          <a class="btn danger" href="tel:119">119 <small>긴급</small></a>
         </div>
 
         <div class="hr"></div>
 
         <p class="sub" style="margin-top:0">
-          팁: 오비트(원형 포털)에서 <b>마우스를 올리면 회전이 멈추고</b>,
-          원하는 단체를 클릭하면 <b>정보/공유 패널</b>이 열립니다.
+          오비트(원형 포털)에서 <b>마우스를 올리면 회전이 멈추고</b>,
+          클릭하면 <b>정보/공유 패널</b>이 열립니다.
         </p>
       </section>
 
@@ -125,8 +193,8 @@
     <section class="section" id="gridAnchor">
       <div class="sectionHead">
         <div>
-          <h2>전체 단체 목록 (<span id="count">0</span>)</h2>
-          <p>카드에서 바로가기/복사/공유를 사용할 수 있습니다.</p>
+          <h2>표시 중: <span id="count">0</span></h2>
+          <p id="stat" class="muted">전체 단체를 불러오는 중…</p>
         </div>
         <p>“구조 >> 교차원리, 교차원리 기반 무도” 프레임 적용</p>
       </div>
@@ -162,6 +230,7 @@
           <div class="line">
             <div class="code" id="mUrl"></div>
           </div>
+
           <div class="line" style="gap:10px;">
             <button class="btn primary" id="mGo" type="button">바로가기 <small>새 창</small></button>
             <button class="btn" id="mCopy" type="button">링크 복사 <small>URL</small></button>
@@ -170,8 +239,14 @@
 
           <div class="hr"></div>
 
+          <div id="mQuickWrap">
+            <b style="font-size:13px;">Quick 메뉴</b>
+            <div class="quickRow" id="mQuick"></div>
+          </div>
+
+          <div class="hr"></div>
+
           <p class="sub" style="margin:0">
-            이 허브는 각 단체의 공식 대문으로 연결됩니다.
             공통 프레임: <b>구조 >> 교차원리, 교차원리 기반 무도</b>
           </p>
         </div>
