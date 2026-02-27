@@ -1,599 +1,190 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>GLOBAL ALLIANCE HUB | 공식 메인 대문</title>
-  <meta name="description" content="더블크로스 코리아·IPMA·태권검도·안전허브·인증재단·출판사·Global News24를 하나로 연결하는 공식 허브. 구조 >> 교차원리, 교차원리 기반 무도." />
-  <meta name="theme-color" content="#070a12" />
-  <meta name="color-scheme" content="dark" />
-  <meta name="robots" content="index,follow,max-image-preview:large" />
-  <link rel="canonical" href="https://jeonseongkweon-cloud.github.io/global-alliance-hub/" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>GLOBAL ALLIANCE HUB | Official Gateway</title>
+<meta name="description" content="구조 >> 교차원리, 교차원리 기반 무도 · 공식 메인 허브" />
+<meta name="theme-color" content="#070a12" />
+<link rel="stylesheet" href="assets/css/style.css" />
 
-  <!-- OG -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="GLOBAL ALLIANCE HUB | 공식 메인 대문" />
-  <meta property="og:description" content="구조 >> 교차원리, 교차원리 기반 무도 | 공식 허브 · 검색/필터 · Quick 메뉴 · 오비트 포털" />
-  <meta property="og:url" content="https://jeonseongkweon-cloud.github.io/global-alliance-hub/" />
-  <meta property="og:image" content="assets/images/og.jpg" />
+<style>
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="GLOBAL ALLIANCE HUB" />
-  <meta name="twitter:description" content="공식 허브 · 모바일 최적화 게이트" />
-  <meta name="twitter:image" content="assets/images/og.jpg" />
+/* ===============================
+   🔥 MOBILE CENTER LOCK CORE FIX
+   =============================== */
 
-  <link rel="icon" href="assets/images/favicon.ico" />
-  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" />
+.hero{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  padding:18px;
+}
 
-  <link rel="preload" href="assets/css/style.css" as="style" />
-  <link rel="stylesheet" href="assets/css/style.css" />
+.heroRight{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"WebSite",
-    "name":"GLOBAL ALLIANCE HUB",
-    "url":"https://jeonseongkweon-cloud.github.io/global-alliance-hub/",
-    "description":"여러 단체/프로젝트를 하나로 연결하는 공식 허브. 구조 >> 교차원리, 교차원리 기반 무도.",
-    "inLanguage":"ko-KR",
-    "potentialAction":{
-      "@type":"SearchAction",
-      "target":"https://jeonseongkweon-cloud.github.io/global-alliance-hub/?q={search_term_string}",
-      "query-input":"required name=search_term_string"
-    }
+.orbit{
+  position:relative;
+  width:100%;
+  max-width:460px;
+  aspect-ratio:1/1;
+  margin:auto;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* 모든 핵심 요소 중앙 고정 */
+.orbit .ring,
+.orbit .core,
+.orbit .orbitLinks,
+.orbit .orbitNodes{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+}
+
+/* 코어 항상 최상단 */
+.core{
+  z-index:50;
+}
+
+/* 노드가 코어를 침범하지 않도록 */
+.orbitNodes{
+  width:100%;
+  height:100%;
+}
+
+/* 모바일에서 오비트가 잘리지 않게 */
+@media (max-width:520px){
+  .orbit{
+    max-width:380px;
   }
-  </script>
+}
 
-  <!-- index.html 전용: 모바일 ‘첫 화면’ 최적화 -->
-  <style>
-    :root{
-      --safeTop: env(safe-area-inset-top);
-      --safeBot: env(safe-area-inset-bottom);
-    }
-
-    /* 상단바가 모바일에서 겹치지 않게 */
-    .topbar{
-      position: sticky;
-      top: 0;
-      z-index: 60;
-      padding-top: calc(10px + var(--safeTop));
-      backdrop-filter: blur(14px);
-    }
-    .actions{ flex-wrap: wrap; justify-content:flex-end; gap:10px; }
-    .actions .pill{ min-height: 44px; }
-
-    /* 모바일: 첫 화면은 “게이트(카드 그리드)”가 먼저 */
-    .gate{
-      padding: 18px 16px calc(16px + var(--safeBot));
-    }
-    .gateHead{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom: 12px;
-    }
-    .gateTitle{
-      margin:0;
-      font-size: 26px;
-      line-height:1.1;
-      letter-spacing:-0.03em;
-    }
-    .gateSub{
-      margin: 10px 0 0;
-      color: rgba(220,230,255,.86);
-      line-height:1.45;
-      font-size: 14px;
-    }
-    .gateFrame{
-      margin-top: 12px;
-      display:flex;
-      flex-wrap:wrap;
-      gap: 8px;
-    }
-    .gateTag{
-      font-size: 12px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(88,166,255,.18);
-      background: rgba(6,9,20,.30);
-      color: rgba(235,245,255,.92);
-    }
-    .gateTag.gold{
-      border-color: rgba(215,184,106,.22);
-      background: rgba(215,184,106,.10);
-      color: rgba(240,235,220,.92);
-    }
-
-    /* 첫 화면: 단체 “큰 버튼” */
-    .gateGrid{
-      margin-top: 14px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .gateCard{
-      border-radius: 20px;
-      border: 1px solid rgba(88,166,255,.16);
-      background: rgba(10,18,48,.55);
-      box-shadow: 0 14px 40px rgba(0,0,0,.45);
-      padding: 14px 12px 12px;
-      position: relative;
-      overflow:hidden;
-      cursor:pointer;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
-      min-height: 112px;
-      text-align:left;
-    }
-    .gateCard:hover{ transform: translateY(-1px); border-color: rgba(56,232,255,.35); background: rgba(10,18,48,.72); }
-    .gateCard::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(200px 160px at 20% 10%, rgba(56,232,255,.12), transparent 55%),
-        radial-gradient(220px 180px at 90% 90%, rgba(215,184,106,.10), transparent 55%);
-      pointer-events:none;
-    }
-    .gateTop{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      position:relative;
-    }
-    .gateName{
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      font-size: 14px;
-      line-height:1.2;
-    }
-    .gateBadge{
-      font-size: 11px;
-      padding: 6px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(61,220,151,.22);
-      background: rgba(61,220,151,.10);
-      color: rgba(220,255,242,.95);
-      letter-spacing:.08em;
-      white-space:nowrap;
-    }
-    .gateDesc{
-      margin-top: 10px;
-      color: rgba(210,225,255,.78);
-      font-size: 12px;
-      line-height:1.35;
-      min-height: 34px;
-      position:relative;
-    }
-    .gateBtns{
-      margin-top: 10px;
-      display:flex;
-      gap: 8px;
-      position:relative;
-    }
-    .gateBtn{
-      flex:1 1 auto;
-      border-radius: 14px;
-      padding: 10px 10px;
-      border: 1px solid rgba(88,166,255,.18);
-      background: rgba(6,9,20,.30);
-      color: rgba(235,245,255,.95);
-      cursor:pointer;
-      font-weight: 800;
-      font-size: 12px;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
-    }
-    .gateBtn:hover{ transform: translateY(-1px); border-color: rgba(56,232,255,.38); background: rgba(6,9,20,.45); }
-    .gateBtn.primary{
-      border-color: rgba(56,232,255,.30);
-      background: rgba(56,232,255,.10);
-    }
-    .gateBtn.small{
-      flex: 0 0 auto;
-      padding: 10px 11px;
-      min-width: 52px;
-      text-align:center;
-    }
-
-    /* “아래로” 유도 */
-    .gateHint{
-      margin-top: 14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      color: rgba(210,225,255,.70);
-      font-size: 12px;
-    }
-    .gateScroll{
-      border: 1px solid rgba(88,166,255,.14);
-      background: rgba(6,9,20,.25);
-      color: rgba(235,245,255,.92);
-      border-radius: 999px;
-      padding: 10px 12px;
-      cursor:pointer;
-      font-weight: 800;
-    }
-
-    /* 모바일에서는 hero(좌/우 패널) 대신 gate 먼저, hero는 2막 */
-    .hero{
-      display:block;
-      padding: 0 16px 18px;
-    }
-    .heroLeft{ margin-top: 18px; }
-    .heroRight{ margin-top: 14px; }
-
-    /* 오비트가 모바일에서 “작게” 보이지 않게: 높이 확보 */
-    .heroRight .orbit{
-      min-height: 430px;
-    }
-
-    /* 섹션 카드 목록은 모바일에서 1열 */
-    .section{ padding: 14px 16px 26px; }
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr !important;
-      gap: 12px;
-    }
-
-    /* Skeleton (로딩 중에도 꽉 차 보이게) */
-    .skel{
-      border-radius: 20px;
-      border: 1px solid rgba(88,166,255,.12);
-      background: rgba(10,18,48,.45);
-      overflow:hidden;
-      position:relative;
-      min-height: 112px;
-    }
-    .skel::after{
-      content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent);
-      transform: translateX(-100%);
-      animation: shimmer 1.2s linear infinite;
-    }
-    @keyframes shimmer{ to { transform: translateX(100%);} }
-
-    /* 데스크탑에서는 gate를 살짝 컴팩트하게 */
-    @media (min-width: 980px){
-      .gate{ padding: 24px 22px 10px; }
-      .gateGrid{ grid-template-columns: repeat(3, 1fr); }
-      .hero{ display:grid; grid-template-columns: 1.05fr .95fr; gap: 16px; padding: 0 22px 22px; }
-      .grid{ grid-template-columns: repeat(3, 1fr) !important; }
-    }
-  </style>
+</style>
 </head>
 
 <body>
-  <a class="sr" href="#main">본문으로 바로가기</a>
 
-  <!-- HUD overlays -->
-  <div class="hudNoise" aria-hidden="true"></div>
-  <div class="hudScan" aria-hidden="true"></div>
-  <div class="hudCorners" aria-hidden="true"></div>
+<div class="wrap">
 
-  <div class="wrap">
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="brand" aria-label="Global Alliance Hub">
-        <div class="mark" aria-hidden="true"></div>
-        <div class="brandText">
-          <b>GLOBAL ALLIANCE HUB</b>
-          <span>구조 >> 교차원리, 교차원리 기반 무도</span>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button class="pill" id="btnPause" type="button" title="오비트 회전 정지/재개">
-          <span class="dot" aria-hidden="true"></span>
-          <span>ORBIT</span>
-          <small id="pauseState">회전</small>
-        </button>
-
-        <button class="pill" id="btnCopyHub" type="button" title="이 허브 주소 복사">
-          <span class="dot" aria-hidden="true"></span>
-          <span>LINK</span>
-          <small>복사</small>
-        </button>
-
-        <button class="pill" id="btnShareHub" type="button" title="공유">
-          <span class="dot" aria-hidden="true"></span>
-          <span>SHARE</span>
-          <small>전송</small>
-        </button>
-
-        <button class="pill danger" id="btnEmergencyCopy" type="button" title="긴급 신고 템플릿 자동 복사">
-          <span class="dot" aria-hidden="true"></span>
-          <span>EMERGENCY</span>
-          <small>스크립트</small>
-        </button>
-
-        <button class="pill ghost" id="btnMenu" type="button" aria-label="퀵 네비 열기">
-          <span class="dot" aria-hidden="true"></span>
-          <span>MENU</span>
-          <small>열기</small>
-        </button>
-      </div>
-    </header>
-
-    <!-- MOBILE DRAWER -->
-    <div class="drawerBack" id="drawerBack" aria-hidden="true">
-      <aside class="drawer" aria-label="모바일 메뉴">
-        <div class="drawerHead">
-          <b>Quick Navigation</b>
-          <button class="xbtn" id="drawerClose" type="button" aria-label="닫기">✕</button>
-        </div>
-        <div class="drawerBody">
-          <div class="drawerSection">
-            <div class="drawerTitle">단체 바로가기</div>
-            <div class="drawerGrid" id="drawerLinks"></div>
-          </div>
-
-          <div class="drawerSection">
-            <div class="drawerTitle">공통 동작</div>
-            <div class="drawerGrid">
-              <button class="drawerBtn" id="drawerCopyHub" type="button">허브 링크 복사</button>
-              <button class="drawerBtn" id="drawerShareHub" type="button">허브 공유</button>
-              <button class="drawerBtn danger" id="drawerEmergency" type="button">긴급 스크립트 복사</button>
-            </div>
-          </div>
-        </div>
-      </aside>
-    </div>
-
-    <!-- GATE (모바일 첫 화면 핵심) -->
-    <section class="gate" aria-label="공식 게이트">
-      <div class="gateHead">
-        <div>
-          <h1 class="gateTitle">공식 메인 대문</h1>
-          <p class="gateSub">
-            한 번의 터치로 전체 생태계를 이동합니다.<br/>
-            운영 프레임: <b>구조 >> 교차원리, 교차원리 기반 무도</b>
-          </p>
-
-          <div class="gateFrame">
-            <span class="gateTag gold">OFFICIAL GATE</span>
-            <span class="gateTag">Network Gateway</span>
-            <span class="gateTag">Verification</span>
-            <span class="gateTag">Resources</span>
-            <span class="gateTag">Media</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 검색 (모바일도 상단에서 바로) -->
-      <div class="searchBar" aria-label="검색">
-        <input id="q" class="input" type="search" placeholder="검색: 단체명/키워드 (예: IPMA, 안전, 출판…)" autocomplete="off" />
-        <button class="mini" id="btnClear" type="button">초기화</button>
-        <button class="mini" id="btnCopySelected" type="button" title="현재 결과 링크 요약 복사">요약복사</button>
-      </div>
-
-      <div class="chips" id="chips" aria-label="그룹 필터"></div>
-
-      <!-- 모바일 첫 화면: 큰 카드 그리드 -->
-      <div id="gateGrid" class="gateGrid" aria-label="단체 게이트 카드">
-        <!-- JS 로딩 전에도 꽉 차 보이게 Skeleton -->
-        <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
-        <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
-      </div>
-
-      <div class="gateHint">
-        <span>아래로 내려가면 오비트 포털(영화 모드)이 등장합니다.</span>
-        <button class="gateScroll" type="button" id="btnScrollOrbit">ORBIT 보기 ↓</button>
-      </div>
-    </section>
-
-    <!-- 2막: HERO / ORBIT -->
-    <main id="main" class="hero">
-      <section class="panel heroLeft" aria-label="설명">
-        <div class="kicker">
-          OFFICIAL MASTER HUB <em>•</em> Network Gateway <span class="chipLive">LIVE</span>
-        </div>
-
-        <h2 class="h1" style="margin-top:10px;">포털(오비트)로<br/>단체를 선택합니다.</h2>
-
-        <p class="sub">
-          오비트는 “중앙 게이트”에서 각 단체로 이동하는 영화형 UI입니다.
-          <b>첫 방문자는 위의 게이트 카드</b>에서 바로 진입하고,
-          탐색이 필요한 사용자는 오비트로 이동하면 됩니다.
-        </p>
-
-        <div class="hudLine"></div>
-
-        <p class="sub hudMicro" style="margin:0">
-          TIP: MENU에서 전체 링크를 한 번에 확인할 수 있습니다.
-        </p>
-      </section>
-
-      <section class="panel heroRight" aria-label="오비트 포털" id="orbitAnchor">
-        <div class="orbit" id="orbitArea">
-          <div class="ring" aria-hidden="true"></div>
-          <div class="ring r2" aria-hidden="true"></div>
-          <div class="ring r3" aria-hidden="true"></div>
-
-          <div class="core" role="button" tabindex="0" aria-label="허브 코어">
-            <div>
-              <b>CORE</b>
-              <span>ALLIANCE GATE</span>
-            </div>
-          </div>
-
-          <svg class="orbitLinks" id="orbitLinks" aria-hidden="true"></svg>
-          <div id="orbitNodes" class="orbitNodes"></div>
-
-          <div class="orbitHud" aria-hidden="true">
-            <div class="orbitHudRow"><span>SYNC</span><b id="hudSync">100%</b></div>
-            <div class="orbitHudRow"><span>NODES</span><b id="hudNodes">0</b></div>
-            <div class="orbitHudRow"><span>MODE</span><b id="hudMode">LIVE</b></div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- LIST -->
-    <section class="section" id="gridAnchor">
-      <div class="sectionHead">
-        <div>
-          <h2>표시 중: <span id="count">0</span></h2>
-          <p id="stat" class="muted">전체 단체를 불러오는 중…</p>
-        </div>
-        <p class="muted">“구조 >> 교차원리, 교차원리 기반 무도” 프레임 적용</p>
-      </div>
-
-      <div class="grid" id="grid" aria-label="단체 카드 목록"></div>
-    </section>
-
-    <footer class="footer" aria-label="푸터">
-      <div>
-        <b>GLOBAL ALLIANCE HUB</b> · Official Gateway
-        <span style="display:block; margin-top:6px;">© <span id="year"></span> All rights reserved.</span>
-      </div>
-      <div>
-        <span>운영 원칙: 신뢰 · 안전 · 기록 · 확장</span><br/>
-        <span class="muted">이 페이지는 각 단체의 “대문”을 연결하는 허브입니다.</span>
-      </div>
-    </footer>
-  </div>
-
-  <!-- MODAL -->
-  <div class="modalBack" id="modalBack" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="단체 정보">
-      <div class="modalHead">
-        <div>
-          <b id="mTitle">단체명</b>
-          <div class="mSub" id="mTag">설명</div>
-        </div>
-        <button class="xbtn" id="mClose" type="button" aria-label="닫기">✕</button>
-      </div>
-
-      <div class="modalBody">
-        <div class="kv">
-          <div class="line">
-            <div class="code" id="mUrl"></div>
-          </div>
-
-          <div class="line" style="gap:10px;">
-            <button class="btn primary" id="mGo" type="button">바로가기 <small>새 창</small></button>
-            <button class="btn" id="mCopy" type="button">링크 복사 <small>URL</small></button>
-            <button class="btn" id="mShare" type="button">공유 <small>전송</small></button>
-          </div>
-
-          <div class="hudLine"></div>
-
-          <div id="mQuickWrap">
-            <b class="quickTitle">Quick 메뉴</b>
-            <div class="quickRow" id="mQuick"></div>
-          </div>
-
-          <div class="hudLine"></div>
-
-          <p class="sub" style="margin:0">
-            공통 프레임: <b>구조 >> 교차원리, 교차원리 기반 무도</b>
-          </p>
-        </div>
-      </div>
+<header class="topbar">
+  <div class="brand">
+    <div class="mark"></div>
+    <div class="brandText">
+      <b>GLOBAL ALLIANCE HUB</b>
+      <span>구조 >> 교차원리, 교차원리 기반 무도</span>
     </div>
   </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="actions">
+    <button class="pill" id="btnPause">ORBIT</button>
+    <button class="pill" id="btnCopyHub">LINK</button>
+    <button class="pill" id="btnShareHub">SHARE</button>
+    <button class="pill danger" id="btnEmergencyCopy">EMERGENCY</button>
+    <button class="pill ghost" id="btnMenu">MENU</button>
+  </div>
+</header>
 
-  <script src="assets/data/links.js"></script>
-  <script src="assets/js/app.js"></script>
+<main class="hero">
 
-  <!-- gateGrid 렌더: app.js와 별개로 “첫 화면”을 확실히 채우는 안전장치 -->
-  <script>
-    (function(){
-      const grid = document.getElementById("gateGrid");
-      const btn = document.getElementById("btnScrollOrbit");
-      if(btn){
-        btn.addEventListener("click", ()=> {
-          const el = document.getElementById("orbitAnchor");
-          if(el) el.scrollIntoView({behavior:"smooth"});
-        });
-      }
+  <!-- LEFT -->
+  <section class="panel heroLeft">
+    <h1>공식 메인 대문</h1>
+    <p>
+      한 번의 터치로 전체 생태계를 이동합니다.<br>
+      운영 프레임: <b>구조 >> 교차원리, 교차원리 기반 무도</b>
+    </p>
+  </section>
 
-      function normalizeUrl(u){
-        if(!u) return "";
-        const url = String(u).trim();
-        if(!url) return "";
-        if(/^(https?:\/\/|mailto:|tel:)/i.test(url)) return url;
-        return "https://" + url.replace(/^\/+/,"");
-      }
-      async function copyText(text){
-        try{ await navigator.clipboard.writeText(text); }
-        catch(e){
-          const ta=document.createElement("textarea");
-          ta.value=text; document.body.appendChild(ta);
-          ta.select(); try{ document.execCommand("copy"); }catch(_){}
-          ta.remove();
-        }
-      }
+  <!-- RIGHT ORBIT -->
+  <section class="panel heroRight">
 
-      const raw = Array.isArray(window.ALLIANCE_LINKS) ? window.ALLIANCE_LINKS : [];
-      const items = raw.map((x,i)=>({
-        name: (x.name||x.title||x.short||("SITE "+(i+1))).toString(),
-        desc: (x.tagline||x.desc||x.description||x.group||"").toString(),
-        url: normalizeUrl(x.url||x.href||""),
-        badge: (x.badge||"LIVE").toString()
-      })).filter(x=>x.url);
+    <div class="orbit" id="orbitArea">
 
-      if(!grid) return;
+      <div class="ring"></div>
+      <div class="ring r2"></div>
+      <div class="ring r3"></div>
 
-      // 렌더
-      grid.innerHTML = "";
-      const show = items.slice(0, 10); // 모바일 첫 화면 10개까지
-      show.forEach(it=>{
-        const card = document.createElement("div");
-        card.className = "gateCard";
-        card.addEventListener("click", ()=> window.open(it.url, "_blank", "noopener,noreferrer"));
+      <div class="core">
+        <div>
+          <b>CORE</b>
+          <span>ALLIANCE GATE</span>
+        </div>
+      </div>
 
-        const top = document.createElement("div");
-        top.className = "gateTop";
+      <svg class="orbitLinks" id="orbitLinks"></svg>
+      <div id="orbitNodes" class="orbitNodes"></div>
 
-        const nm = document.createElement("div");
-        nm.className = "gateName";
-        nm.textContent = it.name;
+    </div>
 
-        const bd = document.createElement("div");
-        bd.className = "gateBadge";
-        bd.textContent = it.badge;
+  </section>
 
-        top.appendChild(nm);
-        top.appendChild(bd);
+</main>
 
-        const desc = document.createElement("div");
-        desc.className = "gateDesc";
-        desc.textContent = it.desc || "공식 사이트로 이동합니다.";
+<section class="section">
+  <div class="sectionHead">
+    <h2>표시 중: <span id="count">0</span></h2>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
 
-        const btns = document.createElement("div");
-        btns.className = "gateBtns";
+<footer class="footer">
+  © <span id="year"></span> GLOBAL ALLIANCE HUB
+</footer>
 
-        const go = document.createElement("button");
-        go.type = "button";
-        go.className = "gateBtn primary";
-        go.textContent = "바로가기";
-        go.addEventListener("click", (e)=>{ e.stopPropagation(); window.open(it.url, "_blank", "noopener,noreferrer"); });
+</div>
 
-        const cp = document.createElement("button");
-        cp.type = "button";
-        cp.className = "gateBtn small";
-        cp.textContent = "복사";
-        cp.addEventListener("click", async (e)=>{ e.stopPropagation(); await copyText(it.url); });
+<script src="assets/data/links.js"></script>
+<script src="assets/js/app.js"></script>
 
-        btns.appendChild(go);
-        btns.appendChild(cp);
+<script>
 
-        card.appendChild(top);
-        card.appendChild(desc);
-        card.appendChild(btns);
+/* ===============================
+   🔥 ORBIT CENTER HARD LOCK JS
+   =============================== */
 
-        grid.appendChild(card);
-      });
+(function(){
 
-      // 혹시 데이터가 0이면 스켈레톤 대신 안내
-      if(!show.length){
-        grid.innerHTML = "<div class='gateCard' style='grid-column:1/-1; min-height:120px;'><div class='gateName'>데이터를 불러오지 못했습니다</div><div class='gateDesc' style='margin-top:8px;'>assets/data/links.js 로드 여부를 확인해주세요.</div></div>";
-      }
-    })();
-  </script>
+  function forceCenter(){
+    const orbit = document.getElementById("orbitArea");
+    if(!orbit) return;
+
+    const nodes = document.getElementById("orbitNodes");
+    if(!nodes) return;
+
+    const r = orbit.getBoundingClientRect();
+    const cx = r.width * 0.5;
+    const cy = r.height * 0.5;
+
+    const base = Math.min(r.width, r.height);
+    const radius = base * 0.34;
+
+    const list = nodes.querySelectorAll(".node");
+    const total = list.length;
+
+    list.forEach((node, i)=>{
+      const angle = (Math.PI * 2 / total) * i;
+      const x = cx + radius * Math.cos(angle);
+      const y = cy + radius * Math.sin(angle);
+      node.style.left = x + "px";
+      node.style.top = y + "px";
+      node.style.transform = "translate(-50%,-50%)";
+    });
+  }
+
+  window.addEventListener("load", ()=>setTimeout(forceCenter,300));
+  window.addEventListener("resize", forceCenter);
+
+})();
+
+</script>
+
 </body>
 </html>
