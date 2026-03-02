@@ -4,53 +4,47 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Global Alliance Hub | 공식 메인허브</title>
-  <meta name="description" content="Global Alliance Hub 공식 메인허브. 한 화면에서 모든 단체로 즉시 이동, 검색/필터/복사/공유 지원. 구조 >> 교차원리, 교차원리 기반 무도." />
+  <meta name="description" content="Global Alliance Hub 공식 메인허브. 모든 단체로 빠르게 이동하세요. 구조 >> 교차원리, 교차원리 기반 무도." />
   <meta name="theme-color" content="#0b0f19" />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://jeonseongkweon-cloud.github.io/global-alliance-hub/" />
 
   <!-- OG -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Global Alliance Hub | 공식 메인허브" />
-  <meta property="og:description" content="모든 단체로 즉시 이동. 검색/필터/복사/공유 지원. 구조 >> 교차원리, 교차원리 기반 무도." />
-  <meta property="og:url" content="https://jeonseongkweon-cloud.github.io/global-alliance-hub/" />
+  <meta property="og:description" content="모든 단체로 빠르게 이동하세요." />
   <meta property="og:image" content="" />
 
   <style>
     :root{
       --bg:#060914;
-      --panel:rgba(10,16,36,.62);
-      --panel2:rgba(6,10,24,.55);
+      --panel:rgba(9,14,30,.62);
+      --panel2:rgba(6,10,24,.50);
       --stroke:rgba(88,166,255,.16);
       --stroke2:rgba(56,232,255,.22);
       --txt:rgba(235,245,255,.92);
-      --muted:rgba(210,225,255,.72);
-      --muted2:rgba(190,205,235,.62);
-      --gold:rgba(215,184,106,.95);
+      --muted:rgba(210,225,255,.70);
+      --muted2:rgba(190,205,235,.60);
       --cyan:rgba(56,232,255,.95);
+      --gold:rgba(215,184,106,.95);
       --danger:rgba(255,82,122,.95);
-      --shadow: 0 24px 90px rgba(0,0,0,.62);
-      --r14:14px;
-      --r16:16px;
-      --r18:18px;
-      --r22:22px;
-      --r24:24px;
+      --shadow:0 24px 90px rgba(0,0,0,.62);
+      --r16:16px; --r20:20px; --r24:24px;
       --max:1100px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
-      background:
-        radial-gradient(1000px 520px at 20% 0%, rgba(56,232,255,.10), transparent 60%),
-        radial-gradient(1100px 700px at 80% 10%, rgba(215,184,106,.08), transparent 62%),
-        radial-gradient(900px 700px at 50% 120%, rgba(56,232,255,.06), transparent 60%),
-        linear-gradient(180deg, #050714 0%, #060914 50%, #050714 100%);
+      font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",Arial,sans-serif;
       color:var(--txt);
+      background:
+        radial-gradient(900px 520px at 25% 0%, rgba(56,232,255,.10), transparent 60%),
+        radial-gradient(900px 700px at 80% 10%, rgba(215,184,106,.08), transparent 62%),
+        radial-gradient(700px 700px at 50% 120%, rgba(56,232,255,.06), transparent 60%),
+        linear-gradient(180deg, #050714 0%, #060914 50%, #050714 100%);
       overflow-x:hidden;
     }
-    a{color:inherit}
+    a{color:inherit; text-decoration:none}
     .container{width:min(var(--max), 92vw); margin:0 auto}
     .glass{
       border:1px solid var(--stroke);
@@ -59,666 +53,339 @@
       box-shadow:var(--shadow);
       backdrop-filter: blur(14px);
     }
-
-    /* Buttons */
-    .btn{
-      height:44px;
-      padding:0 14px;
-      border-radius:var(--r14);
+    .pill{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:8px 12px;
+      border-radius:999px;
       border:1px solid var(--stroke);
-      background:rgba(6,10,24,.34);
-      color:var(--txt);
-      font-weight:950;
-      cursor:pointer;
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:10px;
-      text-decoration:none;
-      transition: transform .12s ease, border-color .12s ease, background .12s ease;
-      white-space:nowrap;
-      -webkit-tap-highlight-color: transparent;
+      background:rgba(6,10,24,.38);
+      color:var(--muted);
+      font-weight:900;
+      letter-spacing:.2px;
     }
-    .btn:hover{transform: translateY(-1px); border-color:var(--stroke2)}
-    .btn.primary{border-color:rgba(56,232,255,.26); background:rgba(56,232,255,.10)}
-    .btn.danger{border-color:rgba(255,82,122,.26); background:rgba(255,82,122,.10); color:rgba(255,235,240,.95)}
-    .btn.ghost{background:rgba(255,255,255,.03)}
-    .btn.icon{
-      width:44px; padding:0;
-      border-radius:14px;
+    .dot{
+      width:8px; height:8px; border-radius:999px;
+      background:var(--cyan);
+      box-shadow:0 0 14px rgba(56,232,255,.55);
     }
 
-    /* Header */
-    .header{
-      position:sticky; top:0; z-index:200;
-      padding:12px 0;
-      background: linear-gradient(180deg, rgba(6,9,20,.92) 0%, rgba(6,9,20,.62) 70%, rgba(6,9,20,0) 100%);
-      backdrop-filter: blur(14px);
-    }
-    .bar{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      padding:10px 12px;
-      border-radius:18px;
-      border:1px solid var(--stroke);
-      background:rgba(6,10,24,.55);
-    }
-    .brand{display:flex; align-items:center; gap:10px; min-width:0}
-    .logo{
-      width:40px; height:40px; border-radius:14px;
+    /* Top */
+    .topWrap{padding:18px 0 10px}
+    .topCard{padding:16px 16px 14px}
+    .brandRow{display:flex; gap:12px; align-items:center}
+    .logoBox{
+      width:46px; height:46px; border-radius:16px;
       border:1px solid var(--stroke2);
       background:
-        radial-gradient(circle at 30% 30%, rgba(56,232,255,.35), transparent 55%),
-        radial-gradient(circle at 70% 70%, rgba(215,184,106,.25), transparent 55%),
-        rgba(6,10,24,.55);
-      box-shadow:0 18px 60px rgba(0,0,0,.55);
+        radial-gradient(circle at 30% 35%, rgba(56,232,255,.26), transparent 55%),
+        radial-gradient(circle at 70% 65%, rgba(215,184,106,.14), transparent 55%),
+        rgba(6,10,24,.45);
+      position:relative;
+      overflow:hidden;
       flex:0 0 auto;
     }
-    .brand .t{display:flex; flex-direction:column; gap:2px; min-width:0}
-    .brand .t b{
-      font-size:13px; letter-spacing:.14em; opacity:.9;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    .logoBox::after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: conic-gradient(from 180deg, rgba(56,232,255,.0), rgba(56,232,255,.18), rgba(215,184,106,.10), rgba(56,232,255,.0));
+      animation: spin 8s linear infinite;
+      filter: blur(1px);
     }
-    .brand .t span{
-      font-size:12px; color:var(--muted); font-weight:900;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+    @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* Nav (메인 섹션 + 단체 드롭다운 1개) */
-    .nav{
-      display:flex; align-items:center; gap:8px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .nav a.navlink{
-      font-size:12px;
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid rgba(88,166,255,.12);
-      background:rgba(255,255,255,.03);
-      text-decoration:none;
-      font-weight:950;
-      color:var(--txt);
-    }
-    .nav a.navlink:hover{border-color:var(--stroke2)}
-
-    .menuGroup{position:relative; display:inline-flex; align-items:center; gap:8px;}
-    .dropBtn{
-      height:40px;
-      padding:0 12px;
-      border-radius:999px;
-      border:1px solid rgba(88,166,255,.14);
-      background:rgba(255,255,255,.03);
-      color:var(--txt);
-      font-weight:950;
-      font-size:12px;
-      cursor:pointer;
-      display:inline-flex; align-items:center; gap:10px;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .dropBtn:hover{border-color:var(--stroke2)}
-    .caret{opacity:.8; font-weight:900}
-
-    .dropdown{
-      position:absolute; right:0; top:48px;
-      width:min(520px, 92vw);
-      border-radius:18px;
-      border:1px solid rgba(88,166,255,.18);
-      background: rgba(6,9,20,.86);
-      box-shadow: 0 24px 90px rgba(0,0,0,.62);
-      backdrop-filter: blur(16px);
-      overflow:hidden;
-      display:none;
-      z-index:250;
-    }
-    .dropdown.open{display:block}
-    .dropHead{
-      padding:12px;
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      border-bottom:1px solid rgba(88,166,255,.12);
-    }
-    .dropHead b{font-size:12px; letter-spacing:.12em; opacity:.9}
-    .dropHead .x{width:40px; height:40px}
-    .dropBody{padding:10px 12px 12px}
-    .dropSearch{
-      display:flex; gap:10px; align-items:center;
-      margin-bottom:10px;
-    }
-    .dropSearch input{
-      flex:1; height:42px;
-      border-radius:14px;
-      border:1px solid rgba(88,166,255,.14);
-      background:rgba(6,10,24,.25);
-      color:var(--txt);
-      padding:0 12px;
-      outline:none;
-      font-weight:900;
-    }
-    .dropList{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:8px;
-      max-height:min(52vh, 420px);
-      overflow:auto;
-      padding-right:2px;
-    }
-    .dropItem{
-      border-radius:16px;
-      border:1px solid rgba(88,166,255,.12);
-      background:rgba(255,255,255,.03);
-      padding:10px 10px;
-      text-decoration:none;
-      display:flex; flex-direction:column; gap:4px;
-      min-width:0;
-    }
-    .dropItem:hover{border-color:rgba(56,232,255,.22)}
-    .dropItem b{
-      font-size:13px; letter-spacing:-.02em;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .dropItem span{
-      font-size:11px; color:var(--muted2); font-weight:850;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    @media (max-width: 520px){
-      .dropList{grid-template-columns: 1fr;}
-    }
-
-    .lang{display:flex; gap:8px; align-items:center; margin-left:6px;}
-
-    /* Hero */
-    .hero{padding:16px 0 10px}
-    .heroCard{
-      padding:16px;
-      border-radius:24px;
-      border:1px solid var(--stroke);
-      background:
-        radial-gradient(900px 480px at 10% 0%, rgba(56,232,255,.12), transparent 60%),
-        radial-gradient(900px 520px at 90% 0%, rgba(215,184,106,.08), transparent 62%),
-        rgba(10,16,36,.58);
-      box-shadow: var(--shadow);
-    }
-    .kicker{
-      display:flex; align-items:center; gap:10px;
-      color:var(--muted);
-      font-weight:950;
-      font-size:12px;
-      letter-spacing:.14em;
+    .brandText{min-width:0}
+    .brandTitle{
+      margin:0;
+      font-size:18px;
+      font-weight:1000;
+      letter-spacing:2px;
       text-transform:uppercase;
+      line-height:1.1;
     }
-    .kicker .dot{
-      width:10px; height:10px; border-radius:999px;
-      background:var(--cyan);
-      box-shadow:0 0 18px rgba(56,232,255,.55);
-    }
-    h1{
-      margin:10px 0 8px;
-      font-size: clamp(22px, 4.6vw, 38px);
-      letter-spacing:-.03em;
-      line-height:1.15;
-    }
-    .sub{
-      margin:0;
-      color:var(--muted);
-      line-height:1.5;
-      font-weight:850;
-      max-width: 62ch;
-    }
-
-    .frame{
-      margin-top:12px;
-      padding:12px 14px;
-      border-radius:16px;
-      border:1px solid rgba(56,232,255,.20);
-      background:rgba(6,10,24,.35);
-      color:rgba(235,245,255,.92);
-      font-weight:950;
-      display:flex; align-items:center; gap:10px;
-      flex-wrap:wrap;
-    }
-    .frame .pill{
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(88,166,255,.14);
-      background:rgba(255,255,255,.03);
-      color:var(--muted);
-      font-weight:900;
-      font-size:12px;
-    }
-
-    /* Quick Launch */
-    .quickWrap{margin-top:12px}
-    .quickHead{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      margin:14px 0 10px;
-    }
-    .quickHead h2{
-      margin:0;
-      font-size:14px;
-      letter-spacing:.12em;
-      color:rgba(235,245,255,.86);
-    }
-    .quickHead p{
-      margin:0;
-      font-size:12px;
+    .brandSub{
+      margin:6px 0 0;
       color:var(--muted2);
       font-weight:850;
-      text-align:right;
+      font-size:13px;
       line-height:1.35;
+    }
+    .frameLine{margin-top:12px}
+    .frameLine .pill{width:100%; justify-content:flex-start}
+
+    /* Quick */
+    .section{margin-top:14px}
+    .secHead{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:10px;
+      margin:10px 4px 10px;
+    }
+    .secTitle{
+      margin:0;
+      font-size:16px;
+      font-weight:1000;
+      letter-spacing:.5px;
+    }
+    .secNote{
+      margin:0;
+      color:var(--muted2);
+      font-size:12px;
+      font-weight:850;
     }
     .quickGrid{
       display:grid;
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns:1fr 1fr;
       gap:10px;
     }
     .quickBtn{
+      display:block;
+      padding:14px 14px 12px;
       border-radius:18px;
-      border:1px solid rgba(88,166,255,.14);
-      background:rgba(255,255,255,.03);
-      padding:12px;
-      text-decoration:none;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-height:74px;
-      justify-content:center;
-      position:relative;
-      overflow:hidden;
-      box-shadow: 0 16px 55px rgba(0,0,0,.35);
+      border:1px solid var(--stroke);
+      background:rgba(6,10,24,.30);
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      min-height:78px;
     }
-    .quickBtn::before{
-      content:"";
-      position:absolute; inset:-40%;
-      background:
-        radial-gradient(900px 360px at 20% 10%, rgba(56,232,255,.10), transparent 55%),
-        radial-gradient(900px 520px at 90% 0%, rgba(215,184,106,.06), transparent 60%);
-      opacity:.85;
-      pointer-events:none;
-    }
+    .quickBtn:hover{transform: translateY(-1px); border-color:var(--stroke2); background:rgba(6,10,24,.38)}
     .quickBtn b{
-      position:relative;
-      font-size:13px;
-      font-weight:950;
-      letter-spacing:-.02em;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      display:block;
+      font-size:14px;
+      font-weight:1000;
+      letter-spacing:.2px;
+      margin-bottom:6px;
     }
     .quickBtn span{
-      position:relative;
-      font-size:11px;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
       color:var(--muted2);
+      font-size:12px;
       font-weight:850;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .quickBtn:hover{border-color:rgba(56,232,255,.22); transform: translateY(-1px)}
-    @media (max-width: 980px){
-      .quickGrid{grid-template-columns: repeat(3, 1fr);}
-    }
-    @media (max-width: 560px){
-      .quickGrid{grid-template-columns: repeat(2, 1fr);}
+      line-height:1.35;
     }
 
-    /* Controls row */
-    .controls{
-      margin-top:14px;
+    /* Search + list actions */
+    .tools{
+      margin-top:12px;
       display:flex; gap:10px; flex-wrap:wrap;
-      align-items:center; justify-content:space-between;
+      align-items:center;
     }
-    .search{
-      flex:1;
-      display:flex; gap:10px; align-items:center;
-      min-width:min(520px, 100%);
-    }
-    .search input{
-      flex:1;
-      height:46px;
+    .input{
+      flex:1 1 220px;
+      height:44px;
       border-radius:16px;
-      border:1px solid rgba(88,166,255,.14);
-      background:rgba(6,10,24,.25);
+      border:1px solid var(--stroke);
+      background:rgba(6,10,24,.32);
       color:var(--txt);
       padding:0 14px;
-      outline:none;
       font-weight:900;
+      outline:none;
     }
-    .search input::placeholder{color:rgba(210,225,255,.55)}
-    .meta{
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
-      justify-content:flex-end;
+    .btn{
+      height:44px;
+      padding:0 14px;
+      border-radius:16px;
+      border:1px solid var(--stroke);
+      background:rgba(6,10,24,.28);
+      color:var(--txt);
+      font-weight:1000;
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      -webkit-tap-highlight-color: transparent;
+      white-space:nowrap;
+    }
+    .btn:hover{transform: translateY(-1px); border-color:var(--stroke2); background:rgba(6,10,24,.36)}
+    .btn.primary{border-color:rgba(56,232,255,.26); background:rgba(56,232,255,.10)}
+    .btn.danger{border-color:rgba(255,82,122,.26); background:rgba(255,82,122,.10)}
+    .metaRow{
+      margin-top:10px;
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center; justify-content:space-between;
+      color:var(--muted2);
+      font-weight:850;
+      font-size:12px;
+    }
+
+    /* Cards */
+    .listWrap{margin-top:14px; padding:14px}
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+      margin-top:10px;
+    }
+    .card{
+      border-radius:22px;
+      border:1px solid var(--stroke);
+      background:rgba(6,10,24,.28);
+      padding:14px;
+    }
+    .cardTop{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .cardTitle{
+      margin:0;
+      font-size:16px;
+      font-weight:1000;
+      letter-spacing:.2px;
+      line-height:1.2;
     }
     .badge{
       display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px;
+      padding:6px 10px;
       border-radius:999px;
-      border:1px solid rgba(88,166,255,.12);
-      background:rgba(255,255,255,.03);
-      font-weight:950;
-      color:var(--muted);
-    }
-    .badge b{color:var(--txt)}
-
-    .chips{margin-top:12px; display:flex; gap:8px; flex-wrap:wrap}
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid rgba(88,166,255,.14);
-      background:rgba(6,10,24,.38);
-      color:var(--txt);
-      font-weight:900;
-      cursor:pointer;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .chip small{font-weight:800; color:var(--muted)}
-    .chip.on{border-color:var(--stroke2); box-shadow:0 0 0 4px rgba(56,232,255,.06) inset}
-
-    /* Directory grid */
-    .section{padding:12px 0 24px}
-    .sectionHead{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
-      margin:12px 0 10px;
-    }
-    .sectionHead h2{margin:0; font-size:18px; letter-spacing:-.02em}
-    .sectionHead p{
-      margin:0;
-      color:var(--muted2);
-      font-weight:850;
+      border:1px solid rgba(56,232,255,.22);
+      background:rgba(56,232,255,.08);
+      color:rgba(220,255,255,.92);
+      font-weight:1000;
       font-size:12px;
-      line-height:1.4;
-      text-align:right;
-      white-space:pre-line;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-    }
-    @media (max-width: 980px){
-      .grid{grid-template-columns: repeat(2, 1fr);}
-      .search{min-width:100%}
-    }
-    @media (max-width: 560px){
-      .grid{grid-template-columns: 1fr;}
-      .nav{justify-content:flex-start}
-    }
-
-    .card{
-      border-radius:22px;
-      border:1px solid rgba(88,166,255,.14);
-      background: rgba(10,16,36,.60);
-      box-shadow: 0 18px 70px rgba(0,0,0,.45);
-      padding:14px;
-      position:relative;
-      overflow:hidden;
-    }
-    .card::before{
-      content:"";
-      position:absolute; inset:-40%;
-      background:
-        radial-gradient(800px 320px at 20% 10%, rgba(56,232,255,.10), transparent 55%),
-        radial-gradient(900px 520px at 90% 0%, rgba(215,184,106,.08), transparent 60%);
-      opacity:.8;
-      pointer-events:none;
-    }
-    .card .top{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-      position:relative;
-    }
-    .live{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(56,232,255,.18);
-      background:rgba(6,10,24,.24);
-      font-weight:950;
-      color:rgba(235,245,255,.92);
-      font-size:12px;
-      white-space:nowrap;
       flex:0 0 auto;
+      white-space:nowrap;
     }
-    .live::before{
-      content:"";
-      width:8px; height:8px; border-radius:999px;
-      background:var(--cyan);
-      box-shadow:0 0 18px rgba(56,232,255,.55);
-      animation: livePulse 1.2s ease-in-out infinite;
-    }
-    @keyframes livePulse{
-      0%,100%{ transform: scale(0.86); opacity:.55; }
-      50%{ transform: scale(1.12); opacity:1; }
-    }
-    .title{
-      margin:0;
-      font-size:16px;
-      letter-spacing:-.02em;
-      font-weight:950;
-      line-height:1.25;
-      min-width:0;
-      flex:1;
-      word-break:keep-all;
-    }
-    .desc{
-      position:relative;
-      margin:8px 0 10px;
+    .tagline{
+      margin:10px 0 10px;
       color:var(--muted);
       font-weight:850;
       line-height:1.45;
-      font-size:12px;
-      min-height: 2.8em;
-      word-break:keep-all;
+      font-size:13px;
     }
-    .url{
-      position:relative;
-      display:block;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      font-size:11px;
-      color:rgba(180,220,255,.92);
-      text-decoration:none;
+    .urlBox{
+      border-radius:16px;
+      border:1px solid rgba(88,166,255,.14);
+      background:rgba(6,10,24,.30);
       padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(88,166,255,.12);
-      background:rgba(6,10,24,.22);
-      word-break:break-word;
-      overflow-wrap:anywhere;
+      overflow:hidden;
+      word-break:break-all;
+      color:rgba(200,230,255,.82);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.5px;
+      font-weight:800;
     }
-    .actions{
-      position:relative;
+    .row2{
       margin-top:10px;
-      display:flex; gap:10px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
     }
-    .actions .btn{flex:1}
+    .rowQuick{
+      margin-top:10px;
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .mini{
+      height:36px;
+      border-radius:14px;
+      padding:0 12px;
+      font-size:12px;
+      font-weight:1000;
+    }
 
-    /* Footer + floating */
-    .footer{padding:18px 0 26px; color:rgba(210,225,255,.60); font-weight:850; font-size:12px}
-    .footCard{
+    /* Footer */
+    .footer{
+      margin:14px 0 22px;
       padding:14px;
-      border-radius:22px;
-      border:1px solid rgba(88,166,255,.12);
-      background:rgba(6,10,24,.34);
+      color:var(--muted2);
+      font-size:12px;
+      font-weight:850;
+      line-height:1.55;
     }
-    .floatTop{position:fixed; right:14px; bottom:14px; z-index:300; display:none}
 
     /* Toast */
     #toast{
-      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(6,10,24,.70);
+      color:var(--txt);
+      font-weight:1000;
+      font-size:12px;
+      opacity:0;
+      transition:opacity .15s ease;
       z-index:9999;
-      padding:12px 14px; border-radius:14px;
-      border:1px solid rgba(88,166,255,.18);
-      background:rgba(6,9,20,.72);
-      backdrop-filter: blur(14px);
-      color:rgba(235,245,255,.95);
-      font-weight:900;
-      box-shadow:0 18px 65px rgba(0,0,0,.55);
-      opacity:0; pointer-events:none;
-      transition:opacity .18s ease, transform .18s ease;
+      pointer-events:none;
+      box-shadow:0 18px 60px rgba(0,0,0,.45);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Desktop slight upgrade */
+    @media (min-width: 860px){
+      .quickGrid{grid-template-columns:repeat(3,1fr)}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .brandTitle{font-size:20px}
     }
   </style>
-
-  <!-- Data + App -->
-  <script defer src="./assets/data/links.js"></script>
-  <script defer src="./assets/js/app.js"></script>
 </head>
 
 <body>
-  <!-- HEADER -->
-  <header class="header">
-    <div class="container">
-      <div class="bar">
-        <div class="brand">
-          <div class="logo" aria-hidden="true"></div>
-          <div class="t">
-            <b>GLOBAL ALLIANCE HUB</b>
-            <span>구조 >> 교차원리, 교차원리 기반 무도</span>
+  <div class="container">
+
+    <!-- TOP: "여기가 허브다"를 강하게 -->
+    <section class="topWrap">
+      <div class="glass topCard">
+        <div class="brandRow">
+          <div class="logoBox" aria-hidden="true"></div>
+          <div class="brandText">
+            <h1 class="brandTitle">GLOBAL ALLIANCE HUB</h1>
+            <p class="brandSub">공식 메인허브 · 전체 단체 통합 대문</p>
           </div>
         </div>
 
-        <nav class="nav" aria-label="Top navigation">
-          <!-- 메인 섹션 -->
-          <a class="navlink" href="#directory" data-i18n="nav_orgs">단체</a>
-          <a class="navlink" href="#how" data-i18n="nav_how">이용</a>
-          <a class="navlink" href="#contact" data-i18n="nav_contact">문의</a>
+        <div class="frameLine">
+          <div class="pill"><span class="dot"></span><span>구조 >> 교차원리, 교차원리 기반 무도</span></div>
+        </div>
 
-          <!-- 단체 드롭다운 1개 -->
-          <div class="menuGroup">
-            <button class="dropBtn" id="btnDrop" type="button" aria-haspopup="true" aria-expanded="false">
-              <span data-i18n="nav_dropdown">단체 메뉴</span>
-              <span class="caret">▾</span>
-            </button>
-
-            <div class="dropdown" id="dropdown" role="menu" aria-label="Organizations dropdown">
-              <div class="dropHead">
-                <b data-i18n="drop_title">ORGANIZATIONS</b>
-                <button class="btn icon ghost x" id="btnDropClose" type="button" aria-label="Close">✕</button>
-              </div>
-              <div class="dropBody">
-                <div class="dropSearch">
-                  <input id="dropQ" type="search" placeholder="단체 검색…" aria-label="Dropdown search" />
-                  <button class="btn" id="dropClear" type="button" data-i18n="btn_clear">초기화</button>
-                </div>
-                <div class="dropList" id="dropList"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 언어 -->
-          <span class="lang" aria-label="Language">
-            <button class="btn ghost" id="btnLangKo" type="button">KO</button>
-            <button class="btn ghost" id="btnLangEn" type="button">EN</button>
-          </span>
-        </nav>
-      </div>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <main class="hero">
-    <div class="container">
-      <section class="heroCard">
-        <div class="kicker"><span class="dot"></span><span data-i18n="kicker">OFFICIAL MASTER HUB · Central Gateway</span></div>
-        <h1 data-i18n="headline">한 화면에서 모든 단체로 즉시 이동합니다.</h1>
-        <p class="sub" data-i18n="sub">
-          이 페이지는 각 단체/프로젝트의 “첫 관문”입니다. 모바일에서 바로 찾고, 바로 들어가고,
-          언제든지 다시 이 허브로 돌아오도록 설계했습니다.
+        <!-- 내부 설명은 화면에 안 보이게: 필요하면 app.js에서만 사용 -->
+        <p id="internalNote" style="display:none">
+          이 페이지는 각 단체/프로젝트의 첫 관문입니다.
         </p>
 
-        <div class="frame">
-          <span class="pill">FRAME</span>
-          <span data-i18n="frameText">구조 >> 교차원리, 교차원리 기반 무도</span>
-        </div>
-
-        <!-- Quick Launch -->
-        <div class="quickWrap">
-          <div class="quickHead">
-            <h2 data-i18n="quick_title">QUICK LAUNCH</h2>
-            <p data-i18n="quick_desc">가장 자주 쓰는 6개 단체<br/>원터치 이동</p>
+        <!-- QUICK -->
+        <div class="section">
+          <div class="secHead">
+            <h2 class="secTitle">빠른 이동</h2>
+            <p class="secNote">자주 쓰는 6개 단체</p>
           </div>
           <div class="quickGrid" id="quickGrid"></div>
-        </div>
 
-        <!-- Controls -->
-        <div class="controls">
-          <div class="search" role="search">
-            <input id="q" type="search" inputmode="search" placeholder="단체/키워드 검색 (예: IPMA, 안전, news…)" aria-label="Search" />
-            <button class="btn" id="btnClear" type="button" data-i18n="btn_clear">초기화</button>
-            <button class="btn primary" id="btnCopyAll" type="button" data-i18n="btn_copy_all">전체 링크 복사</button>
+          <div class="tools">
+            <input id="q" class="input" type="search" placeholder="단체/키워드 검색 (예: 뉴스24, 안전, 태권검도)" autocomplete="off" />
+            <button class="btn" id="btnReset">초기화</button>
+            <button class="btn primary" id="btnShareAll">전체 공유</button>
+            <button class="btn danger" id="btnEmergencyCopy">긴급 스크립트 복사</button>
           </div>
-          <div class="meta">
-            <span class="badge"><span data-i18n="badge_showing">표시 중</span> : <b id="count">0</b></span>
-            <button class="btn" id="btnCopyHub" type="button" data-i18n="btn_copy_hub">허브 링크 복사</button>
-            <button class="btn" id="btnShareHub" type="button" data-i18n="btn_share">공유</button>
-            <button class="btn danger" id="btnEmergency" type="button" data-i18n="btn_emergency">긴급 스크립트 복사</button>
+
+          <div class="metaRow">
+            <div>표시 중: <b id="count">0</b></div>
+            <div>“바로가기/복사/퀵버튼”으로 빠르게 처리</div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <!-- Filter chips -->
-        <div class="chips" id="chips" aria-label="Filters"></div>
-      </section>
+    <!-- LIST -->
+    <section class="glass listWrap">
+      <div class="secHead" style="margin:0 0 8px;">
+        <h2 class="secTitle">단체 바로가기</h2>
+        <p class="secNote">모든 카드가 아래에 표시됩니다</p>
+      </div>
 
-      <!-- DIRECTORY -->
-      <section id="directory" class="section">
-        <div class="sectionHead">
-          <div>
-            <h2 data-i18n="dir_title">단체 바로가기</h2>
-          </div>
-          <p data-i18n="dir_tip">모든 카드가 화면에 노출됩니다.
-“바로가기/복사/상세”로 빠르게 처리하세요.</p>
-        </div>
+      <div class="grid" id="grid"></div>
+    </section>
 
-        <div class="grid" id="grid" aria-live="polite"></div>
-      </section>
+    <footer class="glass footer">
+      <b>GLOBAL ALLIANCE HUB</b><br/>
+      각 단체로 이동하는 공식 대문 페이지입니다. 언제든 이 허브로 돌아와 다시 이동할 수 있습니다.
+    </footer>
 
-      <!-- HOW -->
-      <section id="how" class="section">
-        <div class="sectionHead">
-          <h2 data-i18n="how_title">이 페이지 사용법</h2>
-          <p data-i18n="how_desc">모바일 기준, 가장 빠르게 이동하는 방법</p>
-        </div>
-        <div class="glass" style="padding:14px;">
-          <ol style="margin:0; padding-left:18px; color:rgba(220,230,255,.82); font-weight:850; line-height:1.6;">
-            <li data-i18n="how_1">상단 검색창에 키워드 입력 → 목록이 즉시 줄어듭니다.</li>
-            <li data-i18n="how_2">필터(칩)로 그룹을 좁힌 뒤 “바로가기”를 누르세요.</li>
-            <li data-i18n="how_3">“복사”는 카톡/문자 공유에 가장 빠릅니다.</li>
-            <li data-i18n="how_4">상단 ‘단체 메뉴’에서 언제든 바로 이동할 수 있습니다.</li>
-          </ol>
-        </div>
-      </section>
-
-      <!-- CONTACT -->
-      <section id="contact" class="section">
-        <div class="sectionHead">
-          <h2 data-i18n="contact_title">문의</h2>
-          <p data-i18n="contact_desc">허브/링크 오류 신고 및 개선 제안</p>
-        </div>
-        <div class="glass" style="padding:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
-          <div style="color:rgba(220,230,255,.82); font-weight:850; line-height:1.6;">
-            <div data-i18n="contact_line1">링크 오류(404)나 단체 추가 요청이 있으면 알려주세요.</div>
-            <div style="opacity:.75;" data-i18n="contact_line2">이 페이지는 “첫 관문”이므로 가장 빠르게 개선됩니다.</div>
-          </div>
-          <a class="btn primary" href="#directory" data-i18n="btn_back_to_dir">단체 목록으로</a>
-        </div>
-      </section>
-
-      <!-- FOOTER -->
-      <footer class="footer">
-        <div class="footCard">
-          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
-            <div>
-              <div style="font-weight:950; letter-spacing:.06em;">GLOBAL ALLIANCE HUB · Official Gateway</div>
-              <div style="margin-top:6px;">© <span id="year"></span> All rights reserved.</div>
-            </div>
-            <div style="text-align:right; max-width:52ch;">
-              <div data-i18n="foot_1">운영 원칙: 신뢰 · 안전 · 기록 · 확장</div>
-              <div style="opacity:.75;" data-i18n="foot_2">구조 >> 교차원리, 교차원리 기반 무도 프레임 적용</div>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
-  </main>
-
-  <!-- Floating back to top -->
-  <div class="floatTop" id="floatTop">
-    <button class="btn primary" type="button" id="btnTop">TOP ↑</button>
   </div>
 
-  <!-- Toast -->
-  <div id="toast" role="status" aria-live="polite"></div>
+  <div id="toast">복사 완료</div>
+
+  <!-- Data -->
+  <script src="assets/data/links.js"></script>
+  <!-- App -->
+  <script src="assets/js/app.js"></script>
 </body>
 </html>
