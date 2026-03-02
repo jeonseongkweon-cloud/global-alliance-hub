@@ -22,14 +22,14 @@
       --stroke:rgba(88,166,255,.16);
       --stroke2:rgba(56,232,255,.22);
       --txt:rgba(235,245,255,.92);
-      --muted:rgba(210,225,255,.70);
-      --muted2:rgba(190,205,235,.60);
+      --muted:rgba(210,225,255,.72);
+      --muted2:rgba(190,205,235,.62);
       --cyan:rgba(56,232,255,.95);
       --gold:rgba(215,184,106,.95);
       --danger:rgba(255,82,122,.95);
       --shadow:0 24px 90px rgba(0,0,0,.62);
       --r16:16px; --r20:20px; --r24:24px;
-      --max:1100px;
+      --max:1120px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -46,6 +46,7 @@
     }
     a{color:inherit; text-decoration:none}
     .container{width:min(var(--max), 92vw); margin:0 auto}
+
     .glass{
       border:1px solid var(--stroke);
       background:var(--panel);
@@ -69,7 +70,7 @@
       box-shadow:0 0 14px rgba(56,232,255,.55);
     }
 
-    /* Top */
+    /* TOP */
     .topWrap{padding:18px 0 10px}
     .topCard{padding:16px 16px 14px}
     .brandRow{display:flex; gap:12px; align-items:center}
@@ -105,65 +106,72 @@
     .brandSub{
       margin:6px 0 0;
       color:var(--muted2);
-      font-weight:850;
+      font-weight:900;
       font-size:13px;
       line-height:1.35;
     }
     .frameLine{margin-top:12px}
     .frameLine .pill{width:100%; justify-content:flex-start}
 
-    /* Quick */
+    /* SECTION HEAD */
     .section{margin-top:14px}
     .secHead{
       display:flex; align-items:flex-end; justify-content:space-between; gap:10px;
       margin:10px 4px 10px;
     }
-    .secTitle{
-      margin:0;
-      font-size:16px;
-      font-weight:1000;
-      letter-spacing:.5px;
-    }
-    .secNote{
-      margin:0;
-      color:var(--muted2);
-      font-size:12px;
-      font-weight:850;
-    }
+    .secTitle{margin:0; font-size:16px; font-weight:1000; letter-spacing:.5px}
+    .secNote{margin:0; color:var(--muted2); font-size:12px; font-weight:900}
+
+    /* QUICK GRID */
     .quickGrid{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:10px;
     }
     .quickBtn{
-      display:block;
-      padding:14px 14px 12px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:14px;
       border-radius:18px;
       border:1px solid var(--stroke);
       background:rgba(6,10,24,.30);
       transition: transform .12s ease, border-color .12s ease, background .12s ease;
-      min-height:78px;
+      min-height:84px;
     }
     .quickBtn:hover{transform: translateY(-1px); border-color:var(--stroke2); background:rgba(6,10,24,.38)}
-    .quickBtn b{
+    .qLogo{
+      width:42px; height:42px; border-radius:14px;
+      border:1px solid rgba(56,232,255,.18);
+      background:rgba(6,10,24,.45);
+      overflow:hidden;
+      flex:0 0 auto;
+      display:grid; place-items:center;
+    }
+    .qLogo img{width:100%; height:100%; object-fit:cover; display:block}
+    .qText{min-width:0}
+    .qText b{
       display:block;
       font-size:14px;
       font-weight:1000;
       letter-spacing:.2px;
       margin-bottom:6px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-    .quickBtn span{
+    .qText span{
       display:-webkit-box;
       -webkit-line-clamp:2;
       -webkit-box-orient: vertical;
       overflow:hidden;
       color:var(--muted2);
       font-size:12px;
-      font-weight:850;
+      font-weight:900;
       line-height:1.35;
     }
 
-    /* Search + list actions */
+    /* TOOLS */
     .tools{
       margin-top:12px;
       display:flex; gap:10px; flex-wrap:wrap;
@@ -201,11 +209,35 @@
       display:flex; gap:10px; flex-wrap:wrap;
       align-items:center; justify-content:space-between;
       color:var(--muted2);
-      font-weight:850;
+      font-weight:900;
       font-size:12px;
     }
 
-    /* Cards */
+    /* YOUTUBE */
+    .ytWrap{margin-top:14px; padding:14px}
+    .ytCard{padding:14px}
+    .ytTop{display:flex; align-items:flex-end; justify-content:space-between; gap:12px}
+    .ytTitle{margin:0; font-size:16px; font-weight:1000}
+    .ytLinkRow{display:flex; gap:8px; flex-wrap:wrap}
+    .ytFrame{
+      margin-top:12px;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(88,166,255,.16);
+      background:rgba(6,10,24,.30);
+    }
+    .ytFrame .ratio{
+      position:relative;
+      width:100%;
+      padding-top:56.25%;
+    }
+    .ytFrame iframe{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      border:0;
+    }
+
+    /* LIST */
     .listWrap{margin-top:14px; padding:14px}
     .grid{
       display:grid;
@@ -222,12 +254,26 @@
     .cardTop{
       display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
     }
+    .titleRow{display:flex; gap:12px; align-items:center; min-width:0}
+    .cLogo{
+      width:44px; height:44px; border-radius:16px;
+      border:1px solid rgba(56,232,255,.18);
+      background:rgba(6,10,24,.45);
+      overflow:hidden;
+      flex:0 0 auto;
+      display:grid; place-items:center;
+    }
+    .cLogo img{width:100%; height:100%; object-fit:cover; display:block}
     .cardTitle{
       margin:0;
       font-size:16px;
       font-weight:1000;
       letter-spacing:.2px;
       line-height:1.2;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:58vw;
     }
     .badge{
       display:inline-flex; align-items:center; gap:8px;
@@ -244,22 +290,11 @@
     .tagline{
       margin:10px 0 10px;
       color:var(--muted);
-      font-weight:850;
+      font-weight:900;
       line-height:1.45;
       font-size:13px;
     }
-    .urlBox{
-      border-radius:16px;
-      border:1px solid rgba(88,166,255,.14);
-      background:rgba(6,10,24,.30);
-      padding:10px 12px;
-      overflow:hidden;
-      word-break:break-all;
-      color:rgba(200,230,255,.82);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size:12.5px;
-      font-weight:800;
-    }
+
     .row2{
       margin-top:10px;
       display:grid;
@@ -278,17 +313,17 @@
       font-weight:1000;
     }
 
-    /* Footer */
+    /* FOOTER */
     .footer{
       margin:14px 0 22px;
       padding:14px;
       color:var(--muted2);
       font-size:12px;
-      font-weight:850;
+      font-weight:900;
       line-height:1.55;
     }
 
-    /* Toast */
+    /* TOAST */
     #toast{
       position:fixed;
       left:50%;
@@ -309,11 +344,11 @@
       backdrop-filter: blur(10px);
     }
 
-    /* Desktop slight upgrade */
     @media (min-width: 860px){
       .quickGrid{grid-template-columns:repeat(3,1fr)}
       .grid{grid-template-columns:repeat(2,1fr)}
       .brandTitle{font-size:20px}
+      .cardTitle{max-width:320px}
     }
   </style>
 </head>
@@ -321,7 +356,7 @@
 <body>
   <div class="container">
 
-    <!-- TOP: "여기가 허브다"를 강하게 -->
+    <!-- TOP -->
     <section class="topWrap">
       <div class="glass topCard">
         <div class="brandRow">
@@ -336,17 +371,13 @@
           <div class="pill"><span class="dot"></span><span>구조 >> 교차원리, 교차원리 기반 무도</span></div>
         </div>
 
-        <!-- 내부 설명은 화면에 안 보이게: 필요하면 app.js에서만 사용 -->
-        <p id="internalNote" style="display:none">
-          이 페이지는 각 단체/프로젝트의 첫 관문입니다.
-        </p>
-
         <!-- QUICK -->
         <div class="section">
           <div class="secHead">
             <h2 class="secTitle">빠른 이동</h2>
             <p class="secNote">자주 쓰는 6개 단체</p>
           </div>
+
           <div class="quickGrid" id="quickGrid"></div>
 
           <div class="tools">
@@ -364,6 +395,31 @@
       </div>
     </section>
 
+    <!-- YOUTUBE (중간 삽입) -->
+    <section class="glass ytWrap">
+      <div class="ytCard">
+        <div class="ytTop">
+          <h2 class="ytTitle">Global News24 · 공식 채널</h2>
+          <div class="ytLinkRow">
+            <a class="btn primary" href="https://www.youtube.com/@globalnews24official" target="_blank" rel="noopener">채널 바로가기</a>
+            <a class="btn" href="https://www.youtube.com/watch?v=zuwIu8hx6bM" target="_blank" rel="noopener">영상 링크</a>
+          </div>
+        </div>
+
+        <div class="ytFrame" aria-label="Global News24 첫 번째 영상">
+          <div class="ratio">
+            <iframe
+              loading="lazy"
+              src="https://www.youtube.com/embed/zuwIu8hx6bM"
+              title="Global News24 Official Video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- LIST -->
     <section class="glass listWrap">
       <div class="secHead" style="margin:0 0 8px;">
@@ -376,16 +432,14 @@
 
     <footer class="glass footer">
       <b>GLOBAL ALLIANCE HUB</b><br/>
-      각 단체로 이동하는 공식 대문 페이지입니다. 언제든 이 허브로 돌아와 다시 이동할 수 있습니다.
+      각 단체로 이동하는 공식 대문입니다. 필요할 때 언제든 이 허브로 돌아와 다시 이동할 수 있습니다.
     </footer>
 
   </div>
 
   <div id="toast">복사 완료</div>
 
-  <!-- Data -->
   <script src="assets/data/links.js"></script>
-  <!-- App -->
   <script src="assets/js/app.js"></script>
 </body>
 </html>
