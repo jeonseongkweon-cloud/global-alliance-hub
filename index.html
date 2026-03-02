@@ -6,27 +6,23 @@
   <title>Global Alliance Hub | 공식 메인허브</title>
   <meta name="description" content="Global Alliance Hub 공식 메인허브. 한 화면에서 모든 단체로 즉시 이동, 검색/필터/복사/공유 지원. 구조 >> 교차원리, 교차원리 기반 무도." />
   <meta name="theme-color" content="#0b0f19" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://jeonseongkweon-cloud.github.io/global-alliance-hub/" />
 
   <!-- OG -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Global Alliance Hub | 공식 메인허브" />
   <meta property="og:description" content="모든 단체로 즉시 이동. 검색/필터/복사/공유 지원. 구조 >> 교차원리, 교차원리 기반 무도." />
   <meta property="og:url" content="https://jeonseongkweon-cloud.github.io/global-alliance-hub/" />
-  <!-- 필요 시 OG 이미지 -->
   <meta property="og:image" content="" />
 
-  <!-- SEO -->
-  <link rel="canonical" href="https://jeonseongkweon-cloud.github.io/global-alliance-hub/" />
-  <meta name="robots" content="index,follow" />
-
-  <!-- Style (허브 단독 고급 CSS 내장: 복붙 즉시 완성) -->
   <style>
     :root{
       --bg:#060914;
       --panel:rgba(10,16,36,.62);
       --panel2:rgba(6,10,24,.55);
       --stroke:rgba(88,166,255,.16);
-      --stroke2:rgba(56,232,255,.18);
+      --stroke2:rgba(56,232,255,.22);
       --txt:rgba(235,245,255,.92);
       --muted:rgba(210,225,255,.72);
       --muted2:rgba(190,205,235,.62);
@@ -34,8 +30,10 @@
       --cyan:rgba(56,232,255,.95);
       --danger:rgba(255,82,122,.95);
       --shadow: 0 24px 90px rgba(0,0,0,.62);
+      --r14:14px;
       --r16:16px;
-      --r20:20px;
+      --r18:18px;
+      --r22:22px;
       --r24:24px;
       --max:1100px;
     }
@@ -61,24 +59,12 @@
       box-shadow:var(--shadow);
       backdrop-filter: blur(14px);
     }
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid var(--stroke);
-      background:rgba(6,10,24,.38);
-      color:var(--txt);
-      font-weight:900;
-      letter-spacing:-.01em;
-      cursor:pointer;
-      user-select:none;
-    }
-    .chip small{font-weight:800; color:var(--muted)}
-    .chip.on{border-color:var(--stroke2); box-shadow:0 0 0 4px rgba(56,232,255,.06) inset}
+
+    /* Buttons */
     .btn{
       height:44px;
       padding:0 14px;
-      border-radius:14px;
+      border-radius:var(--r14);
       border:1px solid var(--stroke);
       background:rgba(6,10,24,.34);
       color:var(--txt);
@@ -89,24 +75,20 @@
       text-decoration:none;
       transition: transform .12s ease, border-color .12s ease, background .12s ease;
       white-space:nowrap;
+      -webkit-tap-highlight-color: transparent;
     }
     .btn:hover{transform: translateY(-1px); border-color:var(--stroke2)}
-    .btn.primary{
-      border-color:rgba(56,232,255,.26);
-      background:rgba(56,232,255,.10);
-    }
-    .btn.danger{
-      border-color:rgba(255,82,122,.26);
-      background:rgba(255,82,122,.10);
-      color:rgba(255,235,240,.95);
-    }
-    .btn.ghost{
-      background:rgba(255,255,255,.03);
+    .btn.primary{border-color:rgba(56,232,255,.26); background:rgba(56,232,255,.10)}
+    .btn.danger{border-color:rgba(255,82,122,.26); background:rgba(255,82,122,.10); color:rgba(255,235,240,.95)}
+    .btn.ghost{background:rgba(255,255,255,.03)}
+    .btn.icon{
+      width:44px; padding:0;
+      border-radius:14px;
     }
 
     /* Header */
     .header{
-      position:sticky; top:0; z-index:100;
+      position:sticky; top:0; z-index:200;
       padding:12px 0;
       background: linear-gradient(180deg, rgba(6,9,20,.92) 0%, rgba(6,9,20,.62) 70%, rgba(6,9,20,0) 100%);
       backdrop-filter: blur(14px);
@@ -127,27 +109,25 @@
         radial-gradient(circle at 70% 70%, rgba(215,184,106,.25), transparent 55%),
         rgba(6,10,24,.55);
       box-shadow:0 18px 60px rgba(0,0,0,.55);
+      flex:0 0 auto;
     }
-    .brand .t{
-      display:flex; flex-direction:column; gap:2px; min-width:0;
-    }
+    .brand .t{display:flex; flex-direction:column; gap:2px; min-width:0}
     .brand .t b{
       font-size:13px; letter-spacing:.14em; opacity:.9;
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
     .brand .t span{
       font-size:12px; color:var(--muted); font-weight:900;
-      letter-spacing:-.01em;
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
 
-    /* Top menu */
+    /* Nav (메인 섹션 + 단체 드롭다운 1개) */
     .nav{
       display:flex; align-items:center; gap:8px;
       flex-wrap:wrap;
       justify-content:flex-end;
     }
-    .nav a{
+    .nav a.navlink{
       font-size:12px;
       padding:10px 12px;
       border-radius:999px;
@@ -157,16 +137,96 @@
       font-weight:950;
       color:var(--txt);
     }
-    .nav a:hover{border-color:var(--stroke2)}
-    .lang{
-      display:flex; gap:8px; align-items:center;
-      margin-left:6px;
+    .nav a.navlink:hover{border-color:var(--stroke2)}
+
+    .menuGroup{position:relative; display:inline-flex; align-items:center; gap:8px;}
+    .dropBtn{
+      height:40px;
+      padding:0 12px;
+      border-radius:999px;
+      border:1px solid rgba(88,166,255,.14);
+      background:rgba(255,255,255,.03);
+      color:var(--txt);
+      font-weight:950;
+      font-size:12px;
+      cursor:pointer;
+      display:inline-flex; align-items:center; gap:10px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .dropBtn:hover{border-color:var(--stroke2)}
+    .caret{opacity:.8; font-weight:900}
+
+    .dropdown{
+      position:absolute; right:0; top:48px;
+      width:min(520px, 92vw);
+      border-radius:18px;
+      border:1px solid rgba(88,166,255,.18);
+      background: rgba(6,9,20,.86);
+      box-shadow: 0 24px 90px rgba(0,0,0,.62);
+      backdrop-filter: blur(16px);
+      overflow:hidden;
+      display:none;
+      z-index:250;
+    }
+    .dropdown.open{display:block}
+    .dropHead{
+      padding:12px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      border-bottom:1px solid rgba(88,166,255,.12);
+    }
+    .dropHead b{font-size:12px; letter-spacing:.12em; opacity:.9}
+    .dropHead .x{width:40px; height:40px}
+    .dropBody{padding:10px 12px 12px}
+    .dropSearch{
+      display:flex; gap:10px; align-items:center;
+      margin-bottom:10px;
+    }
+    .dropSearch input{
+      flex:1; height:42px;
+      border-radius:14px;
+      border:1px solid rgba(88,166,255,.14);
+      background:rgba(6,10,24,.25);
+      color:var(--txt);
+      padding:0 12px;
+      outline:none;
+      font-weight:900;
+    }
+    .dropList{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:8px;
+      max-height:min(52vh, 420px);
+      overflow:auto;
+      padding-right:2px;
+    }
+    .dropItem{
+      border-radius:16px;
+      border:1px solid rgba(88,166,255,.12);
+      background:rgba(255,255,255,.03);
+      padding:10px 10px;
+      text-decoration:none;
+      display:flex; flex-direction:column; gap:4px;
+      min-width:0;
+    }
+    .dropItem:hover{border-color:rgba(56,232,255,.22)}
+    .dropItem b{
+      font-size:13px; letter-spacing:-.02em;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .dropItem span{
+      font-size:11px; color:var(--muted2); font-weight:850;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    @media (max-width: 520px){
+      .dropList{grid-template-columns: 1fr;}
     }
 
+    .lang{display:flex; gap:8px; align-items:center; margin-left:6px;}
+
     /* Hero */
-    .hero{padding:18px 0 10px}
+    .hero{padding:16px 0 10px}
     .heroCard{
-      padding:18px;
+      padding:16px;
       border-radius:24px;
       border:1px solid var(--stroke);
       background:
@@ -199,8 +259,9 @@
       color:var(--muted);
       line-height:1.5;
       font-weight:850;
-      max-width: 60ch;
+      max-width: 62ch;
     }
+
     .frame{
       margin-top:12px;
       padding:12px 14px;
@@ -220,6 +281,77 @@
       color:var(--muted);
       font-weight:900;
       font-size:12px;
+    }
+
+    /* Quick Launch */
+    .quickWrap{margin-top:12px}
+    .quickHead{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin:14px 0 10px;
+    }
+    .quickHead h2{
+      margin:0;
+      font-size:14px;
+      letter-spacing:.12em;
+      color:rgba(235,245,255,.86);
+    }
+    .quickHead p{
+      margin:0;
+      font-size:12px;
+      color:var(--muted2);
+      font-weight:850;
+      text-align:right;
+      line-height:1.35;
+    }
+    .quickGrid{
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap:10px;
+    }
+    .quickBtn{
+      border-radius:18px;
+      border:1px solid rgba(88,166,255,.14);
+      background:rgba(255,255,255,.03);
+      padding:12px;
+      text-decoration:none;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-height:74px;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+      box-shadow: 0 16px 55px rgba(0,0,0,.35);
+    }
+    .quickBtn::before{
+      content:"";
+      position:absolute; inset:-40%;
+      background:
+        radial-gradient(900px 360px at 20% 10%, rgba(56,232,255,.10), transparent 55%),
+        radial-gradient(900px 520px at 90% 0%, rgba(215,184,106,.06), transparent 60%);
+      opacity:.85;
+      pointer-events:none;
+    }
+    .quickBtn b{
+      position:relative;
+      font-size:13px;
+      font-weight:950;
+      letter-spacing:-.02em;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .quickBtn span{
+      position:relative;
+      font-size:11px;
+      color:var(--muted2);
+      font-weight:850;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .quickBtn:hover{border-color:rgba(56,232,255,.22); transform: translateY(-1px)}
+    @media (max-width: 980px){
+      .quickGrid{grid-template-columns: repeat(3, 1fr);}
+    }
+    @media (max-width: 560px){
+      .quickGrid{grid-template-columns: repeat(2, 1fr);}
     }
 
     /* Controls row */
@@ -259,10 +391,22 @@
       color:var(--muted);
     }
     .badge b{color:var(--txt)}
-    .chips{
-      margin-top:12px;
-      display:flex; gap:8px; flex-wrap:wrap;
+
+    .chips{margin-top:12px; display:flex; gap:8px; flex-wrap:wrap}
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(88,166,255,.14);
+      background:rgba(6,10,24,.38);
+      color:var(--txt);
+      font-weight:900;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
     }
+    .chip small{font-weight:800; color:var(--muted)}
+    .chip.on{border-color:var(--stroke2); box-shadow:0 0 0 4px rgba(56,232,255,.06) inset}
 
     /* Directory grid */
     .section{padding:12px 0 24px}
@@ -270,11 +414,7 @@
       display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
       margin:12px 0 10px;
     }
-    .sectionHead h2{
-      margin:0;
-      font-size:18px;
-      letter-spacing:-.02em;
-    }
+    .sectionHead h2{margin:0; font-size:18px; letter-spacing:-.02em}
     .sectionHead p{
       margin:0;
       color:var(--muted2);
@@ -282,6 +422,7 @@
       font-size:12px;
       line-height:1.4;
       text-align:right;
+      white-space:pre-line;
     }
 
     .grid{
@@ -330,6 +471,7 @@
       color:rgba(235,245,255,.92);
       font-size:12px;
       white-space:nowrap;
+      flex:0 0 auto;
     }
     .live::before{
       content:"";
@@ -348,6 +490,9 @@
       letter-spacing:-.02em;
       font-weight:950;
       line-height:1.25;
+      min-width:0;
+      flex:1;
+      word-break:keep-all;
     }
     .desc{
       position:relative;
@@ -357,6 +502,7 @@
       line-height:1.45;
       font-size:12px;
       min-height: 2.8em;
+      word-break:keep-all;
     }
     .url{
       position:relative;
@@ -380,22 +526,14 @@
     .actions .btn{flex:1}
 
     /* Footer + floating */
-    .footer{
-      padding:18px 0 26px;
-      color:rgba(210,225,255,.60);
-      font-weight:850;
-      font-size:12px;
-    }
+    .footer{padding:18px 0 26px; color:rgba(210,225,255,.60); font-weight:850; font-size:12px}
     .footCard{
       padding:14px;
       border-radius:22px;
       border:1px solid rgba(88,166,255,.12);
       background:rgba(6,10,24,.34);
     }
-    .floatTop{
-      position:fixed; right:14px; bottom:14px; z-index:120;
-      display:none;
-    }
+    .floatTop{position:fixed; right:14px; bottom:14px; z-index:300; display:none}
 
     /* Toast */
     #toast{
@@ -413,7 +551,7 @@
     }
   </style>
 
-  <!-- Data -->
+  <!-- Data + App -->
   <script defer src="./assets/data/links.js"></script>
   <script defer src="./assets/js/app.js"></script>
 </head>
@@ -432,9 +570,34 @@
         </div>
 
         <nav class="nav" aria-label="Top navigation">
-          <a href="#directory" data-i18n="nav_orgs">단체</a>
-          <a href="#how" data-i18n="nav_how">이용</a>
-          <a href="#contact" data-i18n="nav_contact">문의</a>
+          <!-- 메인 섹션 -->
+          <a class="navlink" href="#directory" data-i18n="nav_orgs">단체</a>
+          <a class="navlink" href="#how" data-i18n="nav_how">이용</a>
+          <a class="navlink" href="#contact" data-i18n="nav_contact">문의</a>
+
+          <!-- 단체 드롭다운 1개 -->
+          <div class="menuGroup">
+            <button class="dropBtn" id="btnDrop" type="button" aria-haspopup="true" aria-expanded="false">
+              <span data-i18n="nav_dropdown">단체 메뉴</span>
+              <span class="caret">▾</span>
+            </button>
+
+            <div class="dropdown" id="dropdown" role="menu" aria-label="Organizations dropdown">
+              <div class="dropHead">
+                <b data-i18n="drop_title">ORGANIZATIONS</b>
+                <button class="btn icon ghost x" id="btnDropClose" type="button" aria-label="Close">✕</button>
+              </div>
+              <div class="dropBody">
+                <div class="dropSearch">
+                  <input id="dropQ" type="search" placeholder="단체 검색…" aria-label="Dropdown search" />
+                  <button class="btn" id="dropClear" type="button" data-i18n="btn_clear">초기화</button>
+                </div>
+                <div class="dropList" id="dropList"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 언어 -->
           <span class="lang" aria-label="Language">
             <button class="btn ghost" id="btnLangKo" type="button">KO</button>
             <button class="btn ghost" id="btnLangEn" type="button">EN</button>
@@ -458,6 +621,15 @@
         <div class="frame">
           <span class="pill">FRAME</span>
           <span data-i18n="frameText">구조 >> 교차원리, 교차원리 기반 무도</span>
+        </div>
+
+        <!-- Quick Launch -->
+        <div class="quickWrap">
+          <div class="quickHead">
+            <h2 data-i18n="quick_title">QUICK LAUNCH</h2>
+            <p data-i18n="quick_desc">가장 자주 쓰는 6개 단체<br/>원터치 이동</p>
+          </div>
+          <div class="quickGrid" id="quickGrid"></div>
         </div>
 
         <!-- Controls -->
@@ -485,7 +657,8 @@
           <div>
             <h2 data-i18n="dir_title">단체 바로가기</h2>
           </div>
-          <p data-i18n="dir_tip">모든 카드가 화면에 노출됩니다.<br/>“바로가기/복사/상세”로 빠르게 처리하세요.</p>
+          <p data-i18n="dir_tip">모든 카드가 화면에 노출됩니다.
+“바로가기/복사/상세”로 빠르게 처리하세요.</p>
         </div>
 
         <div class="grid" id="grid" aria-live="polite"></div>
@@ -502,7 +675,7 @@
             <li data-i18n="how_1">상단 검색창에 키워드 입력 → 목록이 즉시 줄어듭니다.</li>
             <li data-i18n="how_2">필터(칩)로 그룹을 좁힌 뒤 “바로가기”를 누르세요.</li>
             <li data-i18n="how_3">“복사”는 카톡/문자 공유에 가장 빠릅니다.</li>
-            <li data-i18n="how_4">어디에서든 브라우저 뒤로가기로 나와도, 상단에 허브가 항상 고정되어 있습니다.</li>
+            <li data-i18n="how_4">상단 ‘단체 메뉴’에서 언제든 바로 이동할 수 있습니다.</li>
           </ol>
         </div>
       </section>
