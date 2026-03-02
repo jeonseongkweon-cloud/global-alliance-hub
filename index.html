@@ -1,656 +1,551 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>GLOBAL ALLIANCE HUB | Official Gateway</title>
-<meta name="description" content="구조 >> 교차원리, 교차원리 기반 무도 · 공식 메인 허브" />
-<meta name="theme-color" content="#070a12" />
-<meta name="color-scheme" content="dark" />
-<link rel="stylesheet" href="assets/css/style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Global Alliance Hub | 공식 메인허브</title>
+  <meta name="description" content="Global Alliance Hub 공식 메인허브. 한 화면에서 모든 단체로 즉시 이동, 검색/필터/복사/공유 지원. 구조 >> 교차원리, 교차원리 기반 무도." />
+  <meta name="theme-color" content="#0b0f19" />
 
-<style>
-  html{ scroll-behavior:smooth; }
-  .topbar{ position:sticky; top:0; z-index:80; }
+  <!-- OG -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Global Alliance Hub | 공식 메인허브" />
+  <meta property="og:description" content="모든 단체로 즉시 이동. 검색/필터/복사/공유 지원. 구조 >> 교차원리, 교차원리 기반 무도." />
+  <meta property="og:url" content="https://jeonseongkweon-cloud.github.io/global-alliance-hub/" />
+  <!-- 필요 시 OG 이미지 -->
+  <meta property="og:image" content="" />
 
-  /* ===============================
-     TOP NAV (Website-like menu bar)
-     =============================== */
-  .topNavWrap{
-    margin-top:10px;
-    border-radius:18px;
-    border:1px solid rgba(88,166,255,.14);
-    background: rgba(6,9,20,.28);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    padding: 10px 10px;
-  }
-  .topNav{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-  }
-  .navLeft{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    min-width:0;
-  }
-  .navBadge{
-    font-size:11px;
-    padding:6px 10px;
-    border-radius:999px;
-    border:1px solid rgba(215,184,106,.22);
-    background: rgba(215,184,106,.10);
-    color: rgba(240,235,220,.92);
-    letter-spacing:.08em;
-    white-space:nowrap;
-  }
-  .navLinks{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    align-items:center;
-  }
-  .navA{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:10px 12px;
-    border-radius:14px;
-    border:1px solid rgba(88,166,255,.14);
-    background: rgba(6,9,20,.18);
-    color: rgba(235,245,255,.92);
-    text-decoration:none;
-    font-weight:800;
-    font-size:12px;
-    line-height:1;
-    transition: transform .15s ease, border-color .15s ease, background .15s ease;
-    user-select:none;
-    cursor:pointer;
-  }
-  .navA:hover{
-    transform: translateY(-1px);
-    border-color: rgba(56,232,255,.34);
-    background: rgba(6,9,20,.32);
-  }
-  .navA.primary{
-    border-color: rgba(56,232,255,.26);
-    background: rgba(56,232,255,.10);
-  }
+  <!-- SEO -->
+  <link rel="canonical" href="https://jeonseongkweon-cloud.github.io/global-alliance-hub/" />
+  <meta name="robots" content="index,follow" />
 
-  /* 서브 드롭다운(단체 바로가기 1개) */
-  .drop{
-    position:relative;
-  }
-  .dropBtn::after{
-    content:"▾";
-    opacity:.8;
-    font-weight:900;
-    margin-left:6px;
-    transform: translateY(-1px);
-  }
-  .dropPanel{
-    position:absolute;
-    top:calc(100% + 10px);
-    left:0;
-    width:min(420px, 92vw);
-    padding:10px;
-    border-radius:18px;
-    border:1px solid rgba(88,166,255,.14);
-    background: rgba(6,9,20,.78);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 24px 70px rgba(0,0,0,.55);
-    display:none;
-    z-index:90;
-  }
-  .dropPanel.on{ display:block; }
-  .dropGrid{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:10px;
-  }
-  .dropItem{
-    border-radius:16px;
-    border:1px solid rgba(88,166,255,.12);
-    background: rgba(10,18,48,.55);
-    padding:12px 12px;
-    text-decoration:none;
-    color: rgba(235,245,255,.92);
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-    transition: transform .15s ease, border-color .15s ease, background .15s ease;
-  }
-  .dropItem:hover{
-    transform: translateY(-1px);
-    border-color: rgba(56,232,255,.34);
-    background: rgba(10,18,48,.72);
-  }
-  .dropName{
-    font-weight:900;
-    letter-spacing:-0.02em;
-    font-size:12px;
-    line-height:1.2;
-  }
-  .dropMeta{
-    font-size:11px;
-    color: rgba(210,225,255,.70);
-    line-height:1.3;
-  }
-  .dropRow{
-    display:flex;
-    gap:8px;
-    margin-top:10px;
-  }
-  .dropMini{
-    flex:1 1 auto;
-    border-radius:14px;
-    padding:10px 10px;
-    border:1px solid rgba(88,166,255,.14);
-    background: rgba(6,9,20,.20);
-    color: rgba(235,245,255,.92);
-    cursor:pointer;
-    font-weight:900;
-    font-size:12px;
-  }
-  .dropMini:hover{ border-color: rgba(56,232,255,.34); background: rgba(6,9,20,.34); }
+  <!-- Style (허브 단독 고급 CSS 내장: 복붙 즉시 완성) -->
+  <style>
+    :root{
+      --bg:#060914;
+      --panel:rgba(10,16,36,.62);
+      --panel2:rgba(6,10,24,.55);
+      --stroke:rgba(88,166,255,.16);
+      --stroke2:rgba(56,232,255,.18);
+      --txt:rgba(235,245,255,.92);
+      --muted:rgba(210,225,255,.72);
+      --muted2:rgba(190,205,235,.62);
+      --gold:rgba(215,184,106,.95);
+      --cyan:rgba(56,232,255,.95);
+      --danger:rgba(255,82,122,.95);
+      --shadow: 0 24px 90px rgba(0,0,0,.62);
+      --r16:16px;
+      --r20:20px;
+      --r24:24px;
+      --max:1100px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+      background:
+        radial-gradient(1000px 520px at 20% 0%, rgba(56,232,255,.10), transparent 60%),
+        radial-gradient(1100px 700px at 80% 10%, rgba(215,184,106,.08), transparent 62%),
+        radial-gradient(900px 700px at 50% 120%, rgba(56,232,255,.06), transparent 60%),
+        linear-gradient(180deg, #050714 0%, #060914 50%, #050714 100%);
+      color:var(--txt);
+      overflow-x:hidden;
+    }
+    a{color:inherit}
+    .container{width:min(var(--max), 92vw); margin:0 auto}
+    .glass{
+      border:1px solid var(--stroke);
+      background:var(--panel);
+      border-radius:var(--r24);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(6,10,24,.38);
+      color:var(--txt);
+      font-weight:900;
+      letter-spacing:-.01em;
+      cursor:pointer;
+      user-select:none;
+    }
+    .chip small{font-weight:800; color:var(--muted)}
+    .chip.on{border-color:var(--stroke2); box-shadow:0 0 0 4px rgba(56,232,255,.06) inset}
+    .btn{
+      height:44px;
+      padding:0 14px;
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      background:rgba(6,10,24,.34);
+      color:var(--txt);
+      font-weight:950;
+      cursor:pointer;
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      text-decoration:none;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{transform: translateY(-1px); border-color:var(--stroke2)}
+    .btn.primary{
+      border-color:rgba(56,232,255,.26);
+      background:rgba(56,232,255,.10);
+    }
+    .btn.danger{
+      border-color:rgba(255,82,122,.26);
+      background:rgba(255,82,122,.10);
+      color:rgba(255,235,240,.95);
+    }
+    .btn.ghost{
+      background:rgba(255,255,255,.03);
+    }
 
-  .navRight{ display:flex; align-items:center; gap:8px; }
-  .hamb{
-    display:none;
-    align-items:center;
-    justify-content:center;
-    width:44px;
-    height:44px;
-    border-radius:14px;
-    border:1px solid rgba(88,166,255,.14);
-    background: rgba(6,9,20,.22);
-    color: rgba(235,245,255,.92);
-    cursor:pointer;
-    font-weight:900;
-  }
+    /* Header */
+    .header{
+      position:sticky; top:0; z-index:100;
+      padding:12px 0;
+      background: linear-gradient(180deg, rgba(6,9,20,.92) 0%, rgba(6,9,20,.62) 70%, rgba(6,9,20,0) 100%);
+      backdrop-filter: blur(14px);
+    }
+    .bar{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:10px 12px;
+      border-radius:18px;
+      border:1px solid var(--stroke);
+      background:rgba(6,10,24,.55);
+    }
+    .brand{display:flex; align-items:center; gap:10px; min-width:0}
+    .logo{
+      width:40px; height:40px; border-radius:14px;
+      border:1px solid var(--stroke2);
+      background:
+        radial-gradient(circle at 30% 30%, rgba(56,232,255,.35), transparent 55%),
+        radial-gradient(circle at 70% 70%, rgba(215,184,106,.25), transparent 55%),
+        rgba(6,10,24,.55);
+      box-shadow:0 18px 60px rgba(0,0,0,.55);
+    }
+    .brand .t{
+      display:flex; flex-direction:column; gap:2px; min-width:0;
+    }
+    .brand .t b{
+      font-size:13px; letter-spacing:.14em; opacity:.9;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .brand .t span{
+      font-size:12px; color:var(--muted); font-weight:900;
+      letter-spacing:-.01em;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
 
-  /* Mobile panel */
-  .navPanel{
-    display:none;
-    margin-top:10px;
-    padding:10px;
-    border-radius:18px;
-    border:1px solid rgba(88,166,255,.14);
-    background: rgba(6,9,20,.22);
-  }
-  .navPanel.on{ display:block; }
-  .navPanelGrid{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:10px;
-  }
-  .navPanelGrid .navA{ justify-content:center; }
+    /* Top menu */
+    .nav{
+      display:flex; align-items:center; gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .nav a{
+      font-size:12px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(88,166,255,.12);
+      background:rgba(255,255,255,.03);
+      text-decoration:none;
+      font-weight:950;
+      color:var(--txt);
+    }
+    .nav a:hover{border-color:var(--stroke2)}
+    .lang{
+      display:flex; gap:8px; align-items:center;
+      margin-left:6px;
+    }
 
-  /* 모바일에서는 상단 링크 숨기고 햄버거 + “단체”는 패널에 들어감 */
-  @media (max-width:720px){
-    .navLinks{ display:none; }
-    .hamb{ display:inline-flex; }
-    .dropPanel{ display:none !important; }
-  }
+    /* Hero */
+    .hero{padding:18px 0 10px}
+    .heroCard{
+      padding:18px;
+      border-radius:24px;
+      border:1px solid var(--stroke);
+      background:
+        radial-gradient(900px 480px at 10% 0%, rgba(56,232,255,.12), transparent 60%),
+        radial-gradient(900px 520px at 90% 0%, rgba(215,184,106,.08), transparent 62%),
+        rgba(10,16,36,.58);
+      box-shadow: var(--shadow);
+    }
+    .kicker{
+      display:flex; align-items:center; gap:10px;
+      color:var(--muted);
+      font-weight:950;
+      font-size:12px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+    .kicker .dot{
+      width:10px; height:10px; border-radius:999px;
+      background:var(--cyan);
+      box-shadow:0 0 18px rgba(56,232,255,.55);
+    }
+    h1{
+      margin:10px 0 8px;
+      font-size: clamp(22px, 4.6vw, 38px);
+      letter-spacing:-.03em;
+      line-height:1.15;
+    }
+    .sub{
+      margin:0;
+      color:var(--muted);
+      line-height:1.5;
+      font-weight:850;
+      max-width: 60ch;
+    }
+    .frame{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(56,232,255,.20);
+      background:rgba(6,10,24,.35);
+      color:rgba(235,245,255,.92);
+      font-weight:950;
+      display:flex; align-items:center; gap:10px;
+      flex-wrap:wrap;
+    }
+    .frame .pill{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(88,166,255,.14);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      font-weight:900;
+      font-size:12px;
+    }
 
-  /* ===============================
-     ORBIT CENTER LOCK (keep cinematic)
-     =============================== */
-  .hero{
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-    padding:18px;
-  }
-  .heroRight{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-  }
-  .orbit{
-    position:relative;
-    width:100%;
-    max-width:460px;
-    aspect-ratio:1/1;
-    margin:auto;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-  }
-  .orbit .ring,
-  .orbit .core,
-  .orbit .orbitLinks,
-  .orbit .orbitNodes{
-    position:absolute;
-    left:50%;
-    top:50%;
-    transform:translate(-50%,-50%);
-  }
-  .core{ z-index:50; }
-  .orbitNodes{ width:100%; height:100%; }
-  @media (max-width:520px){
-    .orbit{ max-width:380px; }
-  }
+    /* Controls row */
+    .controls{
+      margin-top:14px;
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center; justify-content:space-between;
+    }
+    .search{
+      flex:1;
+      display:flex; gap:10px; align-items:center;
+      min-width:min(520px, 100%);
+    }
+    .search input{
+      flex:1;
+      height:46px;
+      border-radius:16px;
+      border:1px solid rgba(88,166,255,.14);
+      background:rgba(6,10,24,.25);
+      color:var(--txt);
+      padding:0 14px;
+      outline:none;
+      font-weight:900;
+    }
+    .search input::placeholder{color:rgba(210,225,255,.55)}
+    .meta{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(88,166,255,.12);
+      background:rgba(255,255,255,.03);
+      font-weight:950;
+      color:var(--muted);
+    }
+    .badge b{color:var(--txt)}
+    .chips{
+      margin-top:12px;
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
 
-  .sectionAnchor{ scroll-margin-top: 170px; }
-</style>
+    /* Directory grid */
+    .section{padding:12px 0 24px}
+    .sectionHead{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+      margin:12px 0 10px;
+    }
+    .sectionHead h2{
+      margin:0;
+      font-size:18px;
+      letter-spacing:-.02em;
+    }
+    .sectionHead p{
+      margin:0;
+      color:var(--muted2);
+      font-weight:850;
+      font-size:12px;
+      line-height:1.4;
+      text-align:right;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: repeat(2, 1fr);}
+      .search{min-width:100%}
+    }
+    @media (max-width: 560px){
+      .grid{grid-template-columns: 1fr;}
+      .nav{justify-content:flex-start}
+    }
+
+    .card{
+      border-radius:22px;
+      border:1px solid rgba(88,166,255,.14);
+      background: rgba(10,16,36,.60);
+      box-shadow: 0 18px 70px rgba(0,0,0,.45);
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:-40%;
+      background:
+        radial-gradient(800px 320px at 20% 10%, rgba(56,232,255,.10), transparent 55%),
+        radial-gradient(900px 520px at 90% 0%, rgba(215,184,106,.08), transparent 60%);
+      opacity:.8;
+      pointer-events:none;
+    }
+    .card .top{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+      position:relative;
+    }
+    .live{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(56,232,255,.18);
+      background:rgba(6,10,24,.24);
+      font-weight:950;
+      color:rgba(235,245,255,.92);
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .live::before{
+      content:"";
+      width:8px; height:8px; border-radius:999px;
+      background:var(--cyan);
+      box-shadow:0 0 18px rgba(56,232,255,.55);
+      animation: livePulse 1.2s ease-in-out infinite;
+    }
+    @keyframes livePulse{
+      0%,100%{ transform: scale(0.86); opacity:.55; }
+      50%{ transform: scale(1.12); opacity:1; }
+    }
+    .title{
+      margin:0;
+      font-size:16px;
+      letter-spacing:-.02em;
+      font-weight:950;
+      line-height:1.25;
+    }
+    .desc{
+      position:relative;
+      margin:8px 0 10px;
+      color:var(--muted);
+      font-weight:850;
+      line-height:1.45;
+      font-size:12px;
+      min-height: 2.8em;
+    }
+    .url{
+      position:relative;
+      display:block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size:11px;
+      color:rgba(180,220,255,.92);
+      text-decoration:none;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(88,166,255,.12);
+      background:rgba(6,10,24,.22);
+      word-break:break-word;
+      overflow-wrap:anywhere;
+    }
+    .actions{
+      position:relative;
+      margin-top:10px;
+      display:flex; gap:10px;
+    }
+    .actions .btn{flex:1}
+
+    /* Footer + floating */
+    .footer{
+      padding:18px 0 26px;
+      color:rgba(210,225,255,.60);
+      font-weight:850;
+      font-size:12px;
+    }
+    .footCard{
+      padding:14px;
+      border-radius:22px;
+      border:1px solid rgba(88,166,255,.12);
+      background:rgba(6,10,24,.34);
+    }
+    .floatTop{
+      position:fixed; right:14px; bottom:14px; z-index:120;
+      display:none;
+    }
+
+    /* Toast */
+    #toast{
+      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+      z-index:9999;
+      padding:12px 14px; border-radius:14px;
+      border:1px solid rgba(88,166,255,.18);
+      background:rgba(6,9,20,.72);
+      backdrop-filter: blur(14px);
+      color:rgba(235,245,255,.95);
+      font-weight:900;
+      box-shadow:0 18px 65px rgba(0,0,0,.55);
+      opacity:0; pointer-events:none;
+      transition:opacity .18s ease, transform .18s ease;
+    }
+  </style>
+
+  <!-- Data -->
+  <script defer src="./assets/data/links.js"></script>
+  <script defer src="./assets/js/app.js"></script>
 </head>
 
 <body>
-<div class="wrap">
-
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div class="brand" aria-label="Global Alliance Hub">
-      <div class="mark" aria-hidden="true"></div>
-      <div class="brandText">
-        <b>GLOBAL ALLIANCE HUB</b>
-        <span>구조 >> 교차원리, 교차원리 기반 무도</span>
-      </div>
-    </div>
-
-    <div class="actions">
-      <button class="pill" id="btnPause" type="button" title="오비트 정지/재개">
-        <span class="dot" aria-hidden="true"></span>
-        <span>ORBIT</span>
-        <small id="pauseState">회전</small>
-      </button>
-
-      <button class="pill" id="btnCopyHub" type="button" title="허브 링크 복사">
-        <span class="dot" aria-hidden="true"></span>
-        <span>LINK</span>
-        <small>복사</small>
-      </button>
-
-      <button class="pill" id="btnShareHub" type="button" title="공유">
-        <span class="dot" aria-hidden="true"></span>
-        <span>SHARE</span>
-        <small>전송</small>
-      </button>
-
-      <button class="pill danger" id="btnEmergencyCopy" type="button" title="긴급 신고 템플릿 복사">
-        <span class="dot" aria-hidden="true"></span>
-        <span>EMERGENCY</span>
-        <small>스크립트</small>
-      </button>
-
-      <button class="pill ghost" id="btnMenu" type="button" aria-label="퀵 네비(앱 메뉴)">
-        <span class="dot" aria-hidden="true"></span>
-        <span>MENU</span>
-        <small>Quick</small>
-      </button>
-    </div>
-
-    <!-- NEW: Website Nav Bar -->
-    <div class="topNavWrap" aria-label="상단 메뉴바">
-      <div class="topNav">
-        <div class="navLeft">
-          <span class="navBadge">OFFICIAL GATE</span>
-
-          <!-- Main: section nav -->
-          <div class="navLinks">
-            <a class="navA primary" href="#gate">Gate</a>
-            <a class="navA" href="#orbit">Orbit</a>
-            <a class="navA" href="#directory">Directory</a>
-            <a class="navA" href="#about">About</a>
-            <a class="navA" href="#help">Help</a>
-
-            <!-- Sub: ONE dropdown -->
-            <div class="drop" id="orgDrop">
-              <button class="navA dropBtn" id="orgDropBtn" type="button" aria-haspopup="true" aria-expanded="false">
-                단체 바로가기
-              </button>
-              <div class="dropPanel" id="orgDropPanel" role="menu" aria-label="단체 바로가기 목록">
-                <div class="dropGrid" id="orgDropGrid">
-                  <!-- JS render -->
-                </div>
-                <div class="dropRow">
-                  <button class="dropMini" id="dropCopyHub" type="button">허브 링크 복사</button>
-                  <button class="dropMini" id="dropShareHub" type="button">허브 공유</button>
-                </div>
-              </div>
-            </div>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container">
+      <div class="bar">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div class="t">
+            <b>GLOBAL ALLIANCE HUB</b>
+            <span>구조 >> 교차원리, 교차원리 기반 무도</span>
           </div>
         </div>
 
-        <div class="navRight">
-          <button class="hamb" id="hamb" type="button" aria-label="메뉴 열기">☰</button>
-        </div>
-      </div>
-
-      <!-- Mobile panel -->
-      <div class="navPanel" id="navPanel" aria-label="모바일 메뉴">
-        <div class="navPanelGrid">
-          <a class="navA primary" href="#gate">Gate</a>
-          <a class="navA" href="#orbit">Orbit</a>
-          <a class="navA" href="#directory">Directory</a>
-          <a class="navA" href="#about">About</a>
-          <a class="navA" href="#help">Help</a>
-          <button class="navA" type="button" id="navCopyHubBtn">허브 링크 복사</button>
-          <button class="navA" type="button" id="navOpenOrgBtn">단체 바로가기</button>
-        </div>
-
-        <!-- 모바일에서만 단체 목록 펼침 -->
-        <div class="navPanel" id="navOrgPanel" style="margin-top:10px;">
-          <div class="navPanelGrid" id="navOrgGrid"></div>
-        </div>
+        <nav class="nav" aria-label="Top navigation">
+          <a href="#directory" data-i18n="nav_orgs">단체</a>
+          <a href="#how" data-i18n="nav_how">이용</a>
+          <a href="#contact" data-i18n="nav_contact">문의</a>
+          <span class="lang" aria-label="Language">
+            <button class="btn ghost" id="btnLangKo" type="button">KO</button>
+            <button class="btn ghost" id="btnLangEn" type="button">EN</button>
+          </span>
+        </nav>
       </div>
     </div>
   </header>
 
-  <!-- GATE -->
-  <section class="panel sectionAnchor" id="gate" style="margin:18px; padding:18px;">
-    <div class="kicker">
-      OFFICIAL MASTER HUB <em>•</em> Network Gateway <span class="chipLive">LIVE</span>
-    </div>
-    <h1 style="margin-top:12px;">공식 메인 대문</h1>
-    <p class="sub" style="margin-top:8px;">
-      한 번의 터치로 전체 생태계를 이동합니다. 운영 프레임:
-      <b>구조 >> 교차원리, 교차원리 기반 무도</b>
-    </p>
+  <!-- HERO -->
+  <main class="hero">
+    <div class="container">
+      <section class="heroCard">
+        <div class="kicker"><span class="dot"></span><span data-i18n="kicker">OFFICIAL MASTER HUB · Central Gateway</span></div>
+        <h1 data-i18n="headline">한 화면에서 모든 단체로 즉시 이동합니다.</h1>
+        <p class="sub" data-i18n="sub">
+          이 페이지는 각 단체/프로젝트의 “첫 관문”입니다. 모바일에서 바로 찾고, 바로 들어가고,
+          언제든지 다시 이 허브로 돌아오도록 설계했습니다.
+        </p>
 
-    <div class="searchBar" aria-label="검색" style="margin-top:14px;">
-      <input id="q" class="input" type="search" placeholder="검색: 단체명/키워드 (예: IPMA, 안전, 출판…)" autocomplete="off" />
-      <button class="mini" id="btnClear" type="button">초기화</button>
-      <button class="mini" id="btnCopySelected" type="button" title="현재 결과 링크 요약 복사">요약복사</button>
-    </div>
-    <div class="chips" id="chips" aria-label="그룹 필터"></div>
+        <div class="frame">
+          <span class="pill">FRAME</span>
+          <span data-i18n="frameText">구조 >> 교차원리, 교차원리 기반 무도</span>
+        </div>
 
-    <p class="muted" style="margin-top:10px;">
-      TIP: 상단 ‘단체 바로가기’에서 모든 단체로 즉시 이동할 수 있습니다.
-    </p>
-  </section>
-
-  <!-- ORBIT -->
-  <main class="hero sectionAnchor" id="orbit" aria-label="오비트 섹션">
-    <section class="panel heroLeft" aria-label="설명">
-      <h2 class="h1" style="margin-top:0;">포털(오비트)로<br/>단체를 선택합니다.</h2>
-      <p class="sub">
-        중앙 게이트에서 각 단체로 이동하는 영화형 UI입니다.
-        아래 Directory는 목록형 빠른 이동을 제공합니다.
-      </p>
-      <div class="hudLine"></div>
-      <p class="sub hudMicro" style="margin:0">
-        표시 중 / NODES 숫자가 실제 연결 상태를 알려줍니다.
-      </p>
-    </section>
-
-    <section class="panel heroRight" aria-label="오비트 포털">
-      <div class="orbit" id="orbitArea">
-        <div class="ring" aria-hidden="true"></div>
-        <div class="ring r2" aria-hidden="true"></div>
-        <div class="ring r3" aria-hidden="true"></div>
-
-        <div class="core" role="button" tabindex="0" aria-label="허브 코어">
-          <div>
-            <b>CORE</b>
-            <span>ALLIANCE GATE</span>
+        <!-- Controls -->
+        <div class="controls">
+          <div class="search" role="search">
+            <input id="q" type="search" inputmode="search" placeholder="단체/키워드 검색 (예: IPMA, 안전, news…)" aria-label="Search" />
+            <button class="btn" id="btnClear" type="button" data-i18n="btn_clear">초기화</button>
+            <button class="btn primary" id="btnCopyAll" type="button" data-i18n="btn_copy_all">전체 링크 복사</button>
+          </div>
+          <div class="meta">
+            <span class="badge"><span data-i18n="badge_showing">표시 중</span> : <b id="count">0</b></span>
+            <button class="btn" id="btnCopyHub" type="button" data-i18n="btn_copy_hub">허브 링크 복사</button>
+            <button class="btn" id="btnShareHub" type="button" data-i18n="btn_share">공유</button>
+            <button class="btn danger" id="btnEmergency" type="button" data-i18n="btn_emergency">긴급 스크립트 복사</button>
           </div>
         </div>
 
-        <svg class="orbitLinks" id="orbitLinks" aria-hidden="true"></svg>
-        <div id="orbitNodes" class="orbitNodes"></div>
+        <!-- Filter chips -->
+        <div class="chips" id="chips" aria-label="Filters"></div>
+      </section>
 
-        <div class="orbitHud" aria-hidden="true">
-          <div class="orbitHudRow"><span>SYNC</span><b id="hudSync">100%</b></div>
-          <div class="orbitHudRow"><span>NODES</span><b id="hudNodes">0</b></div>
-          <div class="orbitHudRow"><span>MODE</span><b id="hudMode">LIVE</b></div>
+      <!-- DIRECTORY -->
+      <section id="directory" class="section">
+        <div class="sectionHead">
+          <div>
+            <h2 data-i18n="dir_title">단체 바로가기</h2>
+          </div>
+          <p data-i18n="dir_tip">모든 카드가 화면에 노출됩니다.<br/>“바로가기/복사/상세”로 빠르게 처리하세요.</p>
         </div>
-      </div>
-    </section>
+
+        <div class="grid" id="grid" aria-live="polite"></div>
+      </section>
+
+      <!-- HOW -->
+      <section id="how" class="section">
+        <div class="sectionHead">
+          <h2 data-i18n="how_title">이 페이지 사용법</h2>
+          <p data-i18n="how_desc">모바일 기준, 가장 빠르게 이동하는 방법</p>
+        </div>
+        <div class="glass" style="padding:14px;">
+          <ol style="margin:0; padding-left:18px; color:rgba(220,230,255,.82); font-weight:850; line-height:1.6;">
+            <li data-i18n="how_1">상단 검색창에 키워드 입력 → 목록이 즉시 줄어듭니다.</li>
+            <li data-i18n="how_2">필터(칩)로 그룹을 좁힌 뒤 “바로가기”를 누르세요.</li>
+            <li data-i18n="how_3">“복사”는 카톡/문자 공유에 가장 빠릅니다.</li>
+            <li data-i18n="how_4">어디에서든 브라우저 뒤로가기로 나와도, 상단에 허브가 항상 고정되어 있습니다.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" class="section">
+        <div class="sectionHead">
+          <h2 data-i18n="contact_title">문의</h2>
+          <p data-i18n="contact_desc">허브/링크 오류 신고 및 개선 제안</p>
+        </div>
+        <div class="glass" style="padding:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+          <div style="color:rgba(220,230,255,.82); font-weight:850; line-height:1.6;">
+            <div data-i18n="contact_line1">링크 오류(404)나 단체 추가 요청이 있으면 알려주세요.</div>
+            <div style="opacity:.75;" data-i18n="contact_line2">이 페이지는 “첫 관문”이므로 가장 빠르게 개선됩니다.</div>
+          </div>
+          <a class="btn primary" href="#directory" data-i18n="btn_back_to_dir">단체 목록으로</a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div class="footCard">
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+            <div>
+              <div style="font-weight:950; letter-spacing:.06em;">GLOBAL ALLIANCE HUB · Official Gateway</div>
+              <div style="margin-top:6px;">© <span id="year"></span> All rights reserved.</div>
+            </div>
+            <div style="text-align:right; max-width:52ch;">
+              <div data-i18n="foot_1">운영 원칙: 신뢰 · 안전 · 기록 · 확장</div>
+              <div style="opacity:.75;" data-i18n="foot_2">구조 >> 교차원리, 교차원리 기반 무도 프레임 적용</div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
   </main>
 
-  <!-- DIRECTORY -->
-  <section class="section sectionAnchor" id="directory">
-    <div class="sectionHead">
-      <div>
-        <h2>표시 중: <span id="count">0</span></h2>
-        <p id="stat" class="muted">전체 단체를 불러오는 중…</p>
-      </div>
-      <p class="muted">“구조 >> 교차원리, 교차원리 기반 무도” 프레임 적용</p>
-    </div>
+  <!-- Floating back to top -->
+  <div class="floatTop" id="floatTop">
+    <button class="btn primary" type="button" id="btnTop">TOP ↑</button>
+  </div>
 
-    <div class="grid" id="grid" aria-label="단체 카드 목록"></div>
-  </section>
-
-  <!-- ABOUT -->
-  <section class="panel sectionAnchor" id="about" style="margin:18px; padding:18px;">
-    <h2 style="margin:0 0 8px;">About</h2>
-    <p class="sub" style="margin:0;">
-      이 허브는 각 단체/프로젝트의 “공식 대문”을 하나의 게이트로 연결합니다.
-      방문자는 검색/필터/오비트/Directory/단체 바로가기 드롭다운을 통해 가장 빠른 경로로 이동합니다.
-    </p>
-  </section>
-
-  <!-- HELP -->
-  <section class="panel sectionAnchor" id="help" style="margin:18px; padding:18px;">
-    <h2 style="margin:0 0 8px;">Help</h2>
-    <ul style="margin:0; padding-left:18px; color:rgba(220,230,255,.85); line-height:1.6;">
-      <li><b>단체 바로가기</b>: 상단 드롭다운에서 즉시 이동</li>
-      <li><b>ORBIT</b>: 오비트 회전 정지/재개</li>
-      <li><b>LINK</b>: 허브 주소 복사</li>
-      <li><b>EMERGENCY</b>: 긴급 신고 템플릿 자동 복사</li>
-      <li><b>MENU</b>: Quick Navigation(앱 기능)</li>
-    </ul>
-  </section>
-
-  <footer class="footer" aria-label="푸터">
-    <div>
-      <b>GLOBAL ALLIANCE HUB</b> · Official Gateway
-      <span style="display:block; margin-top:6px;">© <span id="year"></span> All rights reserved.</span>
-    </div>
-    <div>
-      <span>운영 원칙: 신뢰 · 안전 · 기록 · 확장</span><br/>
-      <span class="muted">이 페이지는 각 단체의 “대문”을 연결하는 허브입니다.</span>
-    </div>
-  </footer>
-</div>
-
-<script src="assets/data/links.js"></script>
-<script src="assets/js/app.js"></script>
-
-<script>
-/* ==========================================
-   NAV + ORG DROPDOWN(1) + ORBIT CENTER LOCK
-   ========================================== */
-(function(){
-  const hubUrl = location.href.split("#")[0];
-
-  const hamb = document.getElementById("hamb");
-  const navPanel = document.getElementById("navPanel");
-  const navCopy = document.getElementById("navCopyHubBtn");
-  const navOpenOrgBtn = document.getElementById("navOpenOrgBtn");
-  const navOrgPanel = document.getElementById("navOrgPanel");
-  const navOrgGrid = document.getElementById("navOrgGrid");
-
-  const orgDropBtn = document.getElementById("orgDropBtn");
-  const orgDropPanel = document.getElementById("orgDropPanel");
-  const orgDropGrid = document.getElementById("orgDropGrid");
-  const dropCopyHub = document.getElementById("dropCopyHub");
-  const dropShareHub = document.getElementById("dropShareHub");
-
-  const normalizeUrl = (u)=>{
-    if(!u) return "";
-    const url = String(u).trim();
-    if(!url) return "";
-    if(/^(https?:\/\/|mailto:|tel:)/i.test(url)) return url;
-    return "https://" + url.replace(/^\/+/,"");
-  };
-
-  const copyText = async (text) => {
-    try{ await navigator.clipboard.writeText(text); }
-    catch(e){
-      const ta=document.createElement("textarea");
-      ta.value=text; document.body.appendChild(ta);
-      ta.select(); try{ document.execCommand("copy"); }catch(_){}
-      ta.remove();
-    }
-  };
-
-  const shareUrl = async (url, title="GLOBAL ALLIANCE HUB")=>{
-    if(navigator.share){
-      try{ await navigator.share({title, url}); return true; }catch(e){ return false; }
-    }
-    return false;
-  };
-
-  // Hamburger
-  if(hamb && navPanel){
-    hamb.addEventListener("click", ()=> navPanel.classList.toggle("on"));
-    navPanel.addEventListener("click", (e)=>{
-      const a = e.target.closest("a");
-      if(a) navPanel.classList.remove("on");
-    });
-  }
-
-  // Copy hub
-  if(navCopy){
-    navCopy.addEventListener("click", async ()=>{
-      await copyText(hubUrl);
-      navCopy.textContent = "복사 완료!";
-      setTimeout(()=> navCopy.textContent="허브 링크 복사", 900);
-    });
-  }
-
-  // Desktop dropdown open/close
-  function closeDrop(){
-    if(orgDropPanel){ orgDropPanel.classList.remove("on"); }
-    if(orgDropBtn){ orgDropBtn.setAttribute("aria-expanded","false"); }
-  }
-  function toggleDrop(){
-    if(!orgDropPanel || !orgDropBtn) return;
-    const on = orgDropPanel.classList.toggle("on");
-    orgDropBtn.setAttribute("aria-expanded", on ? "true" : "false");
-  }
-
-  if(orgDropBtn){
-    orgDropBtn.addEventListener("click", (e)=>{
-      e.preventDefault();
-      toggleDrop();
-    });
-  }
-  document.addEventListener("click", (e)=>{
-    const inside = e.target.closest("#orgDrop");
-    if(!inside) closeDrop();
-  });
-  document.addEventListener("keydown", (e)=>{
-    if(e.key === "Escape") closeDrop();
-  });
-
-  // Drop actions
-  if(dropCopyHub){
-    dropCopyHub.addEventListener("click", async ()=>{
-      await copyText(hubUrl);
-      dropCopyHub.textContent = "복사 완료!";
-      setTimeout(()=> dropCopyHub.textContent="허브 링크 복사", 900);
-    });
-  }
-  if(dropShareHub){
-    dropShareHub.addEventListener("click", async ()=>{
-      const ok = await shareUrl(hubUrl, "GLOBAL ALLIANCE HUB");
-      if(!ok){
-        await copyText(hubUrl);
-        dropShareHub.textContent = "공유대신 복사!";
-        setTimeout(()=> dropShareHub.textContent="허브 공유", 900);
-      }
-    });
-  }
-
-  // Render org items from links.js
-  const raw = Array.isArray(window.ALLIANCE_LINKS) ? window.ALLIANCE_LINKS : [];
-  const items = raw.map((x,i)=>({
-    name: (x.name||x.title||x.short||("SITE "+(i+1))).toString(),
-    desc: (x.tagline||x.desc||x.description||x.group||"").toString(),
-    url: normalizeUrl(x.url||x.href||"")
-  })).filter(x=>x.url);
-
-  function renderOrgGrid(targetEl, mode="desktop"){
-    if(!targetEl) return;
-    targetEl.innerHTML = "";
-    items.forEach(it=>{
-      const a = document.createElement("a");
-      a.className = (mode==="mobile") ? "navA" : "dropItem";
-      a.href = it.url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-
-      if(mode==="mobile"){
-        a.textContent = it.name;
-      }else{
-        a.innerHTML = `
-          <div class="dropName">${it.name}</div>
-          <div class="dropMeta">${it.desc || "공식 사이트로 이동"}</div>
-        `;
-      }
-      targetEl.appendChild(a);
-    });
-
-    // empty fallback
-    if(!items.length){
-      if(mode==="mobile"){
-        const b=document.createElement("div");
-        b.className="navA";
-        b.textContent="데이터 로드 실패(links.js 확인)";
-        targetEl.appendChild(b);
-      }else{
-        const d=document.createElement("div");
-        d.className="dropItem";
-        d.innerHTML="<div class='dropName'>데이터 로드 실패</div><div class='dropMeta'>assets/data/links.js 확인</div>";
-        targetEl.appendChild(d);
-      }
-    }
-  }
-
-  renderOrgGrid(orgDropGrid, "desktop");
-  renderOrgGrid(navOrgGrid, "mobile");
-
-  // Mobile “단체 바로가기” toggle
-  if(navOpenOrgBtn && navOrgPanel){
-    navOpenOrgBtn.addEventListener("click", ()=>{
-      navOrgPanel.classList.toggle("on");
-      if(!navOrgPanel.classList.contains("on")){
-        navOrgPanel.style.display = "none";
-      }else{
-        navOrgPanel.style.display = "block";
-      }
-    });
-  }
-
-  // ORBIT CENTER HARD LOCK (works with existing app.js nodes)
-  function forceCenter(){
-    const orbit = document.getElementById("orbitArea");
-    const nodes = document.getElementById("orbitNodes");
-    if(!orbit || !nodes) return;
-
-    const r = orbit.getBoundingClientRect();
-    const cx = r.width * 0.5;
-    const cy = r.height * 0.5;
-
-    const base = Math.min(r.width, r.height);
-    const radius = Math.max(110, base * 0.34);
-
-    const list = nodes.querySelectorAll(".node");
-    const total = list.length;
-    if(!total) return;
-
-    list.forEach((node, i)=>{
-      const angle = (Math.PI * 2 / total) * i;
-      const x = cx + radius * Math.cos(angle);
-      const y = cy + radius * Math.sin(angle);
-      node.style.left = x + "px";
-      node.style.top = y + "px";
-      node.style.transform = "translate(-50%,-50%)";
-    });
-  }
-
-  window.addEventListener("load", ()=> setTimeout(forceCenter, 350));
-  window.addEventListener("resize", ()=> setTimeout(forceCenter, 80));
-})();
-</script>
-
+  <!-- Toast -->
+  <div id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
